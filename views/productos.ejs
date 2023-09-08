@@ -8,21 +8,25 @@
 <body>
     <h1>HOLA </h1>
     <table>
-        <thead>
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Descripción</th>
+          <th>Precio</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (const product of data) { %> <!-- Cambia el nombre de la variable aquí -->
           <tr>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Precio</th>
+            <td><%= product.nombre %></td> <!-- Utiliza el nuevo nombre aquí -->
+            <td><%= product.descripcion %></td>
+            <td><%= product.precio %></td> <!-- Utiliza el nuevo nombre aquí -->
+            
           </tr>
-        </thead>
-        <tbody>
-            <ul>
-                <% data.forEach(function(producto){ %>
-                    
-                  <% }); %>
-              </ul>
-          
-        </tbody>
-      </table>
+        <% } %>
+      </tbody>
+      
+    </table>
+    
 </body>
 </html>
