@@ -60,7 +60,31 @@ const getCrearProductos = async (req, res) => {
       res.status(500).json({ error: 'Hubo un error en la solicitud a la API' }); // Manejar errores en la respuesta al cliente web.
     }
   };
+
+  const verCrearProductos = async (req,res)=>{
+    try {
+      res.render('crearProductos1');
+    } catch (error) {
+      res.sendError(200);
+    }
+  }
+
+  const editarProducto = async (req,res)=>{
+    try {
+      
+    } catch (error) {
+      
+    }
+  }
+  const verEditarProducto = async (req,res)=>{
+    try {
+      const id = req.params.id;
+      res.render('editarProducto');
+    } catch (error) {
+      
+    }
+  }
   
 
   
-  export { getActiveProducts,getCrearProductos,postCrearProductos };
+  export {verEditarProducto,editarProducto, getActiveProducts,getCrearProductos,postCrearProductos,verCrearProductos };

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/productos/crearProductos.css">
+
+    <title>Editar Producto</title>
+  </head>
+  <body>
+    <form
+      class="form"
+      action="https://churrasqueriaherencia.onrender.com/crear"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      <p class="title">Editar producto</p>
+      <br />
+
+      <label>
+        <input
+          type="text"
+          name="nombre"
+          id="nombre"
+          placeholder="Nombre del producto"
+          class="input"
+          value=""
+        />
+        <span>Nombre del producto</span>
+      </label>
+
+      <label>
+        <input
+          type="text"
+          name="descripcion"
+          id="descripcion"
+          placeholder="Descripción...."
+          class="input"
+        />
+        <span>Descripción</span>
+      </label>
+
+      <label>
+        <input
+          type="text"
+          name="precio"
+          id="precio"
+          placeholder="100"
+          class="input"
+        />
+        <span>Precio</span>
+      </label>
+
+      <label for="imagencita">Imagen</label>
+      <input type="file" name="imagencita" id="imagencita" class="input" />
+      <img
+        id="previewImage"
+        src=""
+        alt="Preview Image"
+        style="max-width: 400px; max-height: 400px; display: none"
+      />
+
+      <script>
+        // Obtener referencias a los elementos HTML
+        const inputFile = document.getElementById("imagencita");
+        const previewImage = document.getElementById("previewImage");
+
+        // Agregar un evento change al input file
+        inputFile.addEventListener("change", function () {
+          const selectedFile = this.files[0]; // Obtener el archivo seleccionado
+
+          if (selectedFile) {
+            // Crear una URL temporal para mostrar la imagen seleccionada
+            const imageUrl = URL.createObjectURL(selectedFile);
+
+            // Mostrar la imagen en el elemento <img> y hacerlo visible
+            previewImage.src = imageUrl;
+            previewImage.style.display = "block";
+          } else {
+            // Si no se selecciona ningún archivo, ocultar el elemento <img>
+            previewImage.src = "";
+            previewImage.style.display = "none";
+          }
+        });
+      </script>
+
+      <button class="submit">Registrar</button>
+    </form>
+  </body>
+</html>
