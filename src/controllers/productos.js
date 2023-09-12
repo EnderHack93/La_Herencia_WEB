@@ -10,12 +10,12 @@ const getActiveProducts = async (req, res) => {
   
       const responseData = await response.json();
   
-      if (!Array.isArray(responseData.products)) {
+      if (!Array.isArray(responseData)) {
         
         throw new Error('Los datos de la API no son válidos');
       }
   
-      res.render('productos', { data: responseData.products });
+      res.render('productos', { data: responseData });
     } catch (error) {
       console.error(error);
       res.status(500).send('Error interno en el servidor');
