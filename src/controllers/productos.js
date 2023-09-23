@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 
 const getActiveProducts = async (req, res) => {
     try {
-      const response = await fetch('http://localhost:4000/activos');
+      const response = await fetch('https://churrasqueriaherencia.onrender.com/activos');
   
       if (!response.ok) {
         throw new Error('Error al obtener datos de la API');
@@ -34,7 +34,7 @@ const getCrearProductos = async (req, res) => {
     try {
       const { nombre, descripcion, precio, imagencita } = req.body;
   
-      const response = await fetch('http://localhost:4000/crear', {
+      const response = await fetch('https://churrasqueriaherencia.onrender.com/crear', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -63,7 +63,7 @@ const getCrearProductos = async (req, res) => {
 
   const verCrearProductos = async (req,res)=>{
     try {
-      const response = await fetch('http://localhost:4000/activos');
+      const response = await fetch('https://churrasqueriaherencia.onrender.com/activos');
   
       if (!response.ok) {
         throw new Error('Error al obtener datos de la API');
