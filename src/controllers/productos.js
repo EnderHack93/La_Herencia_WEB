@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 
 const getActiveProducts = async (req, res) => {
     try {
-      const response = await fetch('https://churrasqueriaherencia.onrender.com/activos');
+      const response = await fetch('http://localhost:4000/activos');
   
       if (!response.ok) {
         throw new Error('Error al obtener datos de la API');
@@ -63,9 +63,23 @@ const getCrearProductos = async (req, res) => {
 
   const verCrearProductos = async (req,res)=>{
     try {
-      res.render('crearProductos1');
+      const response = await fetch('http://localhost:4000/activos');
+  
+      if (!response.ok) {
+        throw new Error('Error al obtener datos de la API');
+      }
+  
+      const responseData = await response.json();
+  
+      if (!Array.isArray(responseData)) {
+        
+        throw new Error('Los datos de la API no son válidos');
+      }
+  
+      res.render('crearProductos1', { data: responseData });
     } catch (error) {
-      res.sendError(200);
+      console.error(error);
+      res.status(500).send('Error interno en el servidor');
     }
   }
 

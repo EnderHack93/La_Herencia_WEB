@@ -6,6 +6,6 @@ router.get("/",getActiveProducts)
 router.get("/products",verCrearProductos)
 router.get("/editar/:id",verEditarProducto)
 router.put("/editar/:id",editarProducto)
-router.get("/crear",getCrearProductos)
+//router.get("/crear",getCrearProductos)
 router.post("/crear",postCrearProductos)
 export {router}

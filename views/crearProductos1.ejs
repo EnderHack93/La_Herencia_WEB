@@ -4,8 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/css/productos/crearProductos.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@5.1.0/font/bootstrap-icons.css" rel="stylesheet">
 
-    <title>Crear Producto</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+<title>Crear Producto</title>
   </head>
   <body>
     <form
@@ -85,5 +93,171 @@
 
       <button class="submit">Registrar</button>
     </form>
+
+    <table class="table table-dark">
+      <thead>
+        <tr>
+          <th scope="col">Nombre</th>
+          <th scope="col">precio</th>
+          <th scope="col">Descripción</th>
+          <th scope="col">Imagen</th>
+          <th scope="col">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (const product of data) { %>
+          <tr class="product-row" data-product-id="<%= product._id %>">
+            <td><%= product.nombre %></td>
+            <td><%= product.precio %></td>
+            <td><%= product.descripcion %></td>
+            <td><img src="<%= product.imagen %>" width="120px" height="120px"></td>
+            <td>
+              <button type="button" class="btn btn-primary btn-edit" data-toggle="modal" data-target="#editModal" data-product-id="<%= product._id %>"><i class="bi bi-pencil"></i></button>
+
+
+              <button type="button" class="btn btn-danger" data-product-id="<%= product._id %>"><i class="bi bi-x-circle"></i></button>
+            </td>
+          </tr>
+        <% } %>
+      </tbody>      
+    </table>
+
+
+
+    
+<!--modal para editar-->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalLabel">Editar Producto</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Aquí colocarás los campos de edición, por ejemplo: -->
+        <form id="editForm" enctype="multipart/form-data">
+          <label for="editNombre">Nombre del Producto</label>
+          <input type="text" id="editNombre" name="nombre" class="form-control">
+          
+          <label for="editDescripcion">Descripción</label>
+          <input type="text" id="editDescripcion" name="descripcion" class="form-control">
+          
+          <label for="editPrecio">Precio</label>
+          <input type="text" id="editPrecio" name="precio" class="form-control">
+        
+          <!-- Imagen antigua -->
+          <img id="editPreviewImage" src="" alt="Preview Image" style="max-width: 400px; max-height: 400px; display: none">
+          
+          <!-- Input para cargar una nueva imagen -->
+          <input type="file" name="nuevaImagen" id="editNuevaImagen" class="input" enctype="multipart/form-data" />
+
+        </form>        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" id="saveChanges">Guardar Cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
   </body>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script>
+    $(document).ready(function () {
+  $(".btn-danger").on("click", function () {
+    const productId = $(this).data("product-id");
+
+    $.ajax({
+      type: "PUT",
+      url: `https://churrasqueriaherencia.onrender.com/desactivar/${productId}`, // Ruta de la API para desactivar el producto
+      success: function (response) {
+        // Maneja la respuesta si es necesario
+        console.log(response); // Puedes mostrar un mensaje de éxito u otra acción aquí
+
+        // Elimina la fila de la tabla correspondiente al producto desactivado
+        $(`.product-row[data-product-id="${productId}"]`).remove();
+      },
+      error: function (error) {
+        console.error(error); // Maneja el error si es necesario
+      },
+    });
+  });
+});
+
+  </script>
+  
+    <!--la wea para editar -->
+    <script>
+      $(document).ready(function () {
+    // Función para obtener los detalles del producto por su ID
+    function obtenerProductoPorId(productId, callback) {
+      $.ajax({
+        type: "GET",
+        url: `https://churrasqueriaherencia.onrender.com/producto/${productId}`,
+        success: function (response) {
+          callback(response.product);
+        },
+        error: function (error) {
+          console.error(error);
+        },
+      });
+    }
+  
+    // Abre el modal y carga los detalles del producto
+    $(".btn-edit").on("click", function () {
+      const productIdToEdit = $(this).data("product-id");
+  
+      obtenerProductoPorId(productIdToEdit, function (product) {
+        $("#editNombre").val(product.nombre);
+        $("#editDescripcion").val(product.descripcion);
+        $("#editPrecio").val(product.precio);
+  
+        // Mostrar la imagen antigua en el modal
+        $("#editPreviewImage").attr("src", product.imagen);
+        $("#editPreviewImage").css("display", "block");
+  
+        // Guarda el ID del producto en el botón "Guardar Cambios"
+        $("#saveChanges").data("product-id", productIdToEdit);
+      });
+    });
+  
+    // Guarda los cambios al hacer clic en el botón "Guardar Cambios"
+    $("#saveChanges").on("click", function () {
+    const formData = new FormData(document.getElementById("editForm"));
+    const productIdToEdit = $(this).data("product-id");
+  
+    // Añade el archivo a la solicitud AJAX
+    formData.append("nuevaImagen", $("#editNuevaImagen"));
+  
+    // Envía la solicitud AJAX
+    $.ajax({
+      type: "PUT",
+      url: `https://churrasqueriaherencia.onrender.com/editar/${productIdToEdit}`,
+      data: formData,
+      contentType: false,
+      processData: false,
+      success: function (response) {
+        if(response.message == "Producto editado"){
+          console.log(response);
+          location.reload();
+        }
+      },
+      error: function (error) {
+        console.error(error);
+      },
+    });
+  });
+  });
+  
+  </script>
+    
+  
+  
+  
+  
+  
 </html>
