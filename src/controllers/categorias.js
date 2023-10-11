@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 
 const getActiveCategories = async (req, res) => {
   try {
-    const response = await fetch('http://localhost:4000/categoriasA');
+    const response = await fetch('https://churrasqueriaherencia.onrender.com/categoriasA');
 
     if (!response) {
       throw new Error('Error al obtener datos de la API');
