@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>crear categoria</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@5.1.0/font/bootstrap-icons.css" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+</head>
+<body>
+    <center>
+    <h1>crear categoria</h1>
+</center>
+    <form action="http://localhost:4000/crearCat" method="post">
+        <center>
+        <input type="text" name="nombre" id="nombre">
+        <br>
+        <br>
+        <input type="text" name="descripcion" id="">
+        <br>
+        <br>
+        <button class="submit">Registrar</button>
+    </center>
+    </form>
+    <table class="table table-dark">
+        <thead>
+          <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Descripción</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for (const categoria of categorias) { %>
+            <tr class="product-row" data-product-id="<%= categoria._id %>">
+              <td><%= categoria.nombre %></td>
+              <td><%= categoria.descripcion %></td>
+              <td>
+                <button type="button" class="btn btn-primary btn-edit" data-toggle="modal" data-target="#editModal" data-product-id="<%= categoria._id %>"><i class="bi bi-pencil"></i></button>
+                <button type="button" class="btn btn-danger" data-product-id="<%= categoria._id %>"><i class="bi bi-x-circle"></i></button>
+              </td>
+            </tr>
+          <% } %>
+        </tbody>      
+      </table>
+</body>
+</html>
