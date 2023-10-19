@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 import { getActiveCategories } from '../controllers/categorias.js';
 const getActiveProducts = async (req, res) => {
     try {
-      const response = await fetch('https://churrasqueriaherencia.onrender.com/activos');
+      const response = await fetch('https://herencia-api.onrender.com/productos');
   
       if (!response.ok) {
         throw new Error('Error al obtener datos de la API');
