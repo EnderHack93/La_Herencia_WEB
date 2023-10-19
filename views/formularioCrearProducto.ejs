@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Herencia</title>
+    <link rel="stylesheet" type="text/css" href="/css/miestilacho.css">
+    
+    <style>
+        #customers {
+          font-family: Arial, Helvetica, sans-serif;
+          border-collapse: collapse;
+          width: 100%;
+        }
+        
+        #customers td, #customers th {
+          border: 1px solid #ddd;
+          padding: 8px;
+        }
+        
+        #customers tr:nth-child(even){background-color: #f2f2f2;}
+        
+        #customers tr:hover {background-color: #ddd;}
+        
+        #customers th {
+          padding-top: 12px;
+          padding-bottom: 12px;
+          text-align: left;
+          background-color: #b31b07;
+          color: white;
+        }
+        .sidebarinterno{
+          position: relative;
+          top: -120px;
+          width: 90%;
+        }
+        </style>
+</head>
+<body>
+        <div class="sidebarinterno">
+          <%-include('../views/layouts/sidebar.ejs')%>
+        
+        </div>
+
+        <div class="productsBox">
+            <div class="products">
+                <section class="form-register">
+                    <div>
+                        <h1>Productos</h1>
+                    </div>
+                    
+                    <form
+                    class="form"
+                    action="https://churrasqueriaherencia.onrender.com/crear"
+                    method="post"
+                    enctype="multipart/form-data">
+                    <p class="title">Registrar nuevo producto</p>
+                    <br />
+
+                    <label>
+                        <span>Nombre del producto</span>
+                        <input
+                        type="text"
+                        name="nombre"
+                        id="nombre"
+                        placeholder="Nombre del producto"
+                        class="input"
+                        />
+                        
+                    </label>
+
+                    <label>
+                        <span>Descripción</span>
+                        <input
+                        type="text"
+                        name="descripcion"
+                        id="descripcion"
+                        placeholder="Descripción...."
+                        class="input"
+                        />
+                        
+                    </label>
+
+                    <label>
+                        <span>Precio</span>
+                        <input
+                        type="text"
+                        name="precio"
+                        id="precio"
+                        placeholder="100"
+                        class="input"
+                        />
+                        
+                    </label>
+                    <!--fats fats no te olvides de los estilos crack-->
+                    <label for="categoria">Categoría</label>
+                    <select name="categoriaId" id="categoria" class="input">
+                      <option value="">Selecciona una categoría</option>
+                      <% for (const categoria of categorias) { %>
+                        <option value="<%= categoria._id %>">
+                          <%= categoria.nombre %>
+                        </option>
+                        <% } %>
+                        
+                    </select>
+                    <label for="imagencita">Imagen</label>
+                    <input type="file" name="imagencita" id="imagencita" class="input" />
+                    <img
+                        id="previewImage"
+                        src=""
+                        alt="Preview Image"
+                        style="max-width: 400px; max-height: 400px; display: none"
+                    />
+
+                    <script>
+                        // Obtener referencias a los elementos HTML
+                        const inputFile = document.getElementById("imagencita");
+                        const previewImage = document.getElementById("previewImage");
+
+                        // Agregar un evento change al input file
+                        inputFile.addEventListener("change", function () {
+                        const selectedFile = this.files[0]; // Obtener el archivo seleccionado
+
+                        if (selectedFile) {
+                            // Crear una URL temporal para mostrar la imagen seleccionada
+                            const imageUrl = URL.createObjectURL(selectedFile);
+
+                            // Mostrar la imagen en el elemento <img> y hacerlo visible
+                            previewImage.src = imageUrl;
+                            previewImage.style.display = "block";
+                        } else {
+                            // Si no se selecciona ningún archivo, ocultar el elemento <img>
+                            previewImage.src = "";
+                            previewImage.style.display = "none";
+                        }
+                        });
+                    </script>
+
+                    <button class="submit">Registrar</button>
+                    </form>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <script>
+
+        //abrir formulario
+        function abrir(){
+            document.getElementById("formularioProducto").style.display="block";
+        }
+
+
+        //Menu toggle
+        let toggle = document.querySelector('.toggle');
+        let navigation = document.querySelector('.navigation');
+        let main = document.querySelector('main');
+
+        toggle.onclick = function(){
+            navigation.classList.toggle('active');
+            main.classList.toggle('active');
+        }
+
+
+        //Hovered class in selected list item
+        let list = document.querySelectorAll('.navigation li');
+        function activeLink(){
+            list.forEach((item) => item.classList.remove('hovered'));
+            this.classList.add('hovered');
+        }
+        list.forEach((item) => item.addEventListener('mouseover',activeLink));
+    </script>
+</body>
+</html>

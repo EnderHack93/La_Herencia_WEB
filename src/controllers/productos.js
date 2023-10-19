@@ -60,10 +60,9 @@ const getCrearProductos = async (req, res) => {
       res.status(500).json({ error: 'Hubo un error en la solicitud a la API' }); // Manejar errores en la respuesta al cliente web.
     }
   };
-
-  const verCrearProductos = async (req, res) => {
+  const verproductostabla = async (req, res) => {
     try {
-      const response = await fetch('https://churrasqueriaherencia.onrender.com/activos');
+      const response = await fetch('http://localhost:4000/activos');
   
       if (!response) {
         throw new Error('Error al obtener datos de la API');
@@ -85,7 +84,38 @@ const getCrearProductos = async (req, res) => {
   
       const categorias = await getActiveCategories(); // Obtiene el array de categorías
   
-      res.render('crearProductos1', { productos, categorias });
+      res.render('productosadmin', { productos });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Error interno en el servidor');
+    }
+  };
+
+  const verCrearProductos = async (req, res) => {
+    try {
+      const response = await fetch('http://localhost:4000/activos');
+  
+      if (!response) {
+        throw new Error('Error al obtener datos de la API');
+      }
+  
+      const status = response.status;
+  
+      if (status !== 200) {
+        throw new Error('Error al obtener datos de la API');
+      }
+  
+      const responseData = await response.json();
+  
+      if (!Array.isArray(responseData)) {
+        throw new Error('Los datos de la API no son válidos');
+      }
+  
+      const productos = responseData; // Obtiene el array de productos
+  
+      const categorias = await getActiveCategories(); // Obtiene el array de categorías
+  
+      res.render('formularioCrearProducto', { productos, categorias });
     } catch (error) {
       console.error(error);
       res.status(500).send('Error interno en el servidor');
@@ -113,4 +143,4 @@ const getCrearProductos = async (req, res) => {
   
 
   
-  export {verEditarProducto,editarProducto, getActiveProducts,getCrearProductos,postCrearProductos,verCrearProductos };
+  export {verEditarProducto,editarProducto, getActiveProducts,getCrearProductos,postCrearProductos,verCrearProductos,verproductostabla };
