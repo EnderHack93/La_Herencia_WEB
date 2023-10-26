@@ -62,7 +62,7 @@ const getCrearProductos = async (req, res) => {
   };
   const verproductostabla = async (req, res) => {
     try {
-      const response = await fetch('http://localhost:4000/activos');
+      const response = await fetch('https://herencia-api.onrender.com/productos');
   
       if (!response) {
         throw new Error('Error al obtener datos de la API');
