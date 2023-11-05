@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 
 const getActiveCategories = async (req, res) => {
   try {
-    const response = await fetch('https://churrasqueriaherencia.onrender.com/categoriasA');
+    const response = await fetch('https://herencia-api.onrender.com/categorias');
 
     if (!response) {
       throw new Error('Error al obtener datos de la API');
@@ -16,11 +16,11 @@ const getActiveCategories = async (req, res) => {
 
     const responseData = await response.json();
 
-    if (!Array.isArray(responseData.categorias)) {
+    if (!Array.isArray(responseData)) {
       throw new Error('Los datos de la API no son válidos');
     }
 
-    const categorias = responseData.categorias; // Obtiene el array de categorías
+    const categorias = responseData; // Obtiene el array de categorías
 
     return categorias;
   } catch (error) {
