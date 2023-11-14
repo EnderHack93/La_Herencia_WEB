@@ -113,10 +113,10 @@
                              
                              
                               <td>
-                                <button type="button" class="btn btn-primary btn-edit" data-toggle="modal" data-target="#editModal" data-product-id="<%= product._id %>"><i class="bi bi-pencil"></i></button>
+                                <button type="button" class="btn btn-primary btn-edit" data-toggle="modal" data-target="#editModal" onclick="abrirModaleditar()"><i class="bi bi-pencil"></i></button>
                  
                  
-                                <button type="button" class="btn btn-danger" data-product-id="<%= product._id %>"><i class="bi bi-x-circle"></i></button>
+                                <button type="button" class="btn btn-danger" data-product-id="<%= product.id_producto %>"><i class="bi bi-x-circle"></i></button>
                               </td>
                             </tr>
                           <% } %>
@@ -161,46 +161,6 @@
     </script>
  
        
-<!--modal para editar-->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="editModalLabel">Editar Producto</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <!-- Aquí colocarás los campos de edición, por ejemplo: -->
-          <form id="editForm" enctype="multipart/form-data">
-            <label for="editNombre">Nombre del Producto</label>
-            <input type="text" id="editNombre" name="nombre" class="form-control">
-           
-            <label for="editDescripcion">Descripción</label>
-            <input type="text" id="editDescripcion" name="descripcion" class="form-control">
-           
-            <label for="editPrecio">Precio</label>
-            <input type="text" id="editPrecio" name="precio" class="form-control">
-         
-            <!-- Imagen antigua -->
-            <img id="editPreviewImage" src="" alt="Preview Image" style="max-width: 400px; max-height: 400px; display: none">
-           
-            <!-- Input para cargar una nueva imagen -->
-            <input type="file" name="nuevaImagen" id="editNuevaImagen" class="input" enctype="multipart/form-data" />
- 
-          </form>        
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-          <button type="button" class="btn btn-primary" id="saveChanges">Guardar Cambios</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!--modal para crear-->
- 
-  <!-- Modal de creación -->
   <!-- Modal de creación -->
   <div class="overlay" id="overlay"></div>
  
@@ -308,6 +268,88 @@
   </div>
 </div>
  
+<!-- Modal de creación -->
+<div class="overlay" id="overlayeditar"></div>
+ 
+<div class="modal" id="modaleditar">
+  <div class="close-btn" onclick="cerrarModaleditar()">&times;</div>
+ 
+  <div class="productsBox">
+    <div class="products">
+        <section class="form-register">
+            <div>
+                <h1>Productos</h1>
+            </div>
+            
+            <form
+            class="form"
+            action="/productoseditar"
+            method="POST"
+            enctype="multipart/form-data">
+            <p class="title">Editar Productos</p>
+            <br />
+
+            <label>
+                <span>Nombre del producto</span>
+                <input
+                type="text"
+                name="nombre"
+                id="nombre"
+                placeholder="Nombre del producto"
+                class="input"
+                />
+                
+            </label>
+
+            <label>
+                <span>Descripción</span>
+                <input
+                type="text"
+                name="descripcion"
+                id="descripcion"
+                placeholder="Descripción...."
+                class="input"
+                />
+                
+            </label>
+
+            <label>
+                <span>Precio</span>
+                <input
+                type="text"
+                name="precio"
+                id="precio"
+                placeholder="100"
+                class="input"
+                />
+                
+            </label>
+            <!--fats fats no te olvides de los estilos crack-->
+            <label for="id_categoria">Categoría</label>
+            <select name="id_categoria" id="categoria" class="input">
+              <option value="">Selecciona una categoría</option>
+              <% for (const categoria of categorias) { %>
+                <option value="<%= categoria.id_categoria %>">
+                  <%= categoria.nombre %>
+                </option>
+                <% } %>
+                
+            </select>
+            <label for="imagen">Imagen</label>
+            <input type="file" name="imagen" id="imagen" class="input" />
+            <img
+                id="previewImage"
+                src=""
+                alt="Preview Image"
+                style="max-width: 400px; max-height: 400px; display: none"
+            />
+
+            <button class="submit" type="submit">Registrar</button>
+            </form>
+        </section>
+    </div>
+</div>
+</div>
  
  
 <!-- Resto de tu contenido y scripts -->
@@ -319,11 +361,19 @@ function abrirModal() {
 }
  
 function cerrarModal() {
-    document.getElementById("overlay").style.display = "none";
+    document.getElementById("overlayeditar").style.display = "none";
     document.getElementById("modal").style.display = "none";
 }
  
-
+function abrirModaleditar() {
+    document.getElementById("overlayeditar").style.display = "block";
+    document.getElementById("modaleditar").style.display = "block";
+}
+ 
+function cerrarModaleditar() {
+    document.getElementById("overlayeditar").style.display = "none";
+    document.getElementById("modaleditar").style.display = "none";
+}
 </script>
      
     </body>
@@ -334,17 +384,18 @@ function cerrarModal() {
       const productId = $(this).data("product-id");
  
       $.ajax({
-        type: "PUT",
-        url: `https://churrasqueriaherencia.onrender.com/desactivar/${productId}`, // Ruta de la API para desactivar el producto
+        type: "DELETE",
+        url: `https://herencia-api.onrender.com/productos/${productId}`, // Ruta de la API para desactivar el producto
         success: function (response) {
           // Maneja la respuesta si es necesario
           console.log(response); // Puedes mostrar un mensaje de éxito u otra acción aquí
- 
+          location.reload()
           // Elimina la fila de la tabla correspondiente al producto desactivado
           $(`.product-row[data-product-id="${productId}"]`).remove();
         },
         error: function (error) {
-          console.error(error); // Maneja el error si es necesario
+         
+          console.error(productId); // Maneja el error si es necesario
         },
       });
     });
