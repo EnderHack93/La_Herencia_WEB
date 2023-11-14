@@ -36,7 +36,7 @@ const verCupones = async (req, res) => {
 
 };
 const axiosPostCrearCupon = async (req, res) => {
-  const { nombres,apellidos,ci,correo,contrasena} = req.body;
+  const { descuento,usosMaximos} = req.body;
   const formData = new FormData();
   formData.append("porcentajeDescuento", descuento);
   formData.append("usosMaximos",usosMaximos);
@@ -46,7 +46,7 @@ const axiosPostCrearCupon = async (req, res) => {
     }
    })
    .then((response) => {
-     res.send(response.data);
+     res.redirect('cupones');
    })
    .catch((error) => {
      res.send(error.response.data);
