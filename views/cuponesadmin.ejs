@@ -89,10 +89,10 @@
                 <div class="detailsProducts">
                     <div class="listProducts">
                         <div>
-                            <h1>Lista de productos</h1>
+                            <h1>Lista de Cupones</h1>
                         </div>
                         <div>
-                            <button id="crearProductoModal"  onclick="abrirModal()">NUEVO CLIENTE</button>
+                            <button id="crearProductoModal"  onclick="abrirModal()">NUEVO CUPON</button>
                         </div>
                     
                         <table id="customers">
@@ -205,10 +205,13 @@
 
   <div class="modal" id="modal">
     <div class="close-btn" onclick="cerrarModal()">&times;</div>
-    <form action="/crearcategorias" method="post">
+    <form action="/crearcupones" method="post">
     <!-- Campos del formulario de creación -->
-    <label for="nombre">Nombre de la categoria</label>
-    <input type="text" id="nombre" name="nombre" required>
+    <label for="descuento">descuento del cupon</label>
+    <input type="text" id="descuento" name="descuento" required>
+    <label for="usosMaximos">usos maximos del cupon</label>
+    <input type="text" id="usosMaximos" name="usosMaximos" required>
+    
     <input type="submit">
   </form>
 </div>

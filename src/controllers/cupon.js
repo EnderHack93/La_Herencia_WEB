@@ -35,12 +35,12 @@ const verCupones = async (req, res) => {
     res.render('cuponesadmin', { cupones });
 
 };
- const axiosPostCrearcategorias = async (req, res) => {
-  const { nombre} = req.body;
+const axiosPostCrearCupon = async (req, res) => {
+  const { nombres,apellidos,ci,correo,contrasena} = req.body;
   const formData = new FormData();
-  formData.append("nombre", nombre);
-   console.log(formData)
-  axios.post("https://herencia-api.onrender.com/categorias",formData,{
+  formData.append("porcentajeDescuento", descuento);
+  formData.append("usosMaximos",usosMaximos);
+  axios.post("https://herencia-api.onrender.com/cupones",formData,{
     headers: {
       "Content-Type": "multipart/form-data",
     }
@@ -53,4 +53,4 @@ const verCupones = async (req, res) => {
    });;
   
 };
-export {verCupones};
+export {verCupones,axiosPostCrearCupon};

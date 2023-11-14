@@ -4,7 +4,7 @@ import { getActiveCategories ,verCrearCategorias,axiosPostCrearcategorias} from 
 import { axiosPostCrearCliente ,verCClientes} from "../controllers/clientes.js";
 import {verIndex} from "../controllers/indexcontroller.js";
 import { verPedidos} from "../controllers/pedidos.js";
-import { verCupones} from "../controllers/cupon.js";
+import { verCupones,axiosPostCrearCupon} from "../controllers/cupon.js";
 const router = Router();
 router.get("/",getActiveProducts)
 router.get("/products", verproductostabla);
@@ -26,4 +26,5 @@ router.get("/indexadmin",verIndex)
 router.get("/pedidos",verPedidos)
 //cupones
 router.get("/cupones",verCupones)
+router.post("/crearcupones",axiosPostCrearCupon)
 export {router}
