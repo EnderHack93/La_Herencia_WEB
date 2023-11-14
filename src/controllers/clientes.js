@@ -44,14 +44,13 @@ const verCClientes = async (req, res) => {
   formData.append("ci",ci);
   formData.append("correo",correo);
   formData.append("password",contrasena);
-   console.log(formData)
   axios.post("https://herencia-api.onrender.com/personas",formData,{
     headers: {
       "Content-Type": "multipart/form-data",
     }
    })
    .then((response) => {
-     res.send(response.data);
+     res.redirect("/clientes");
    })
    .catch((error) => {
      res.send(error.response.data);
