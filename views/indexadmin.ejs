@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Herencia</title>
+    <link rel="stylesheet" type="text/css" href="/css/estilachoDashboard.css">
+    
+</head>
+<body>
+    
+    <div class="grid-container">
+        <%-include('../views/layouts/sidebar.ejs')%>
+        <!-- Main -->
+      <main class="main-container">
+        <div class="main-title">
+          <h2>LA HERENCIA</h2>
+        </div>
+
+        <div class="main-cards">
+
+          <div class="card">
+            <div class="card-inner">
+              <h3>PRODUCTOS</h3>
+              <ion-icon class="material-icons-outlined" name="fast-food-outline"></ion-icon>
+            </div>
+            <h1>15</h1>
+          </div>
+
+          <div class="card">
+            <div class="card-inner">
+              <h3>CATEGORIAS</h3>
+              <ion-icon class="material-icons-outlined" name="copy-outline"></ion-icon>
+            </div>
+            <h1>5</h1>
+          </div>
+
+          <div class="card">
+            <div class="card-inner">
+              <h3>CLIENTES</h3>
+              <ion-icon class="material-icons-outlined" name="people-outline"></ion-icon>
+            </div>
+            <h1>121</h1>
+          </div>
+
+          <div class="card">
+            <div class="card-inner">
+              <h3>PEDIDOS</h3>
+              <ion-icon class="material-icons-outlined" name="cart-outline"></ion-icon>
+            </div>
+            <h1>22</h1>
+          </div>
+
+        </div>
+
+        <div class="charts">
+
+          <div class="charts-card">
+            <h2 class="chart-title">Top 5 Productos</h2>
+            <div id="bar-chart"></div>
+          </div>
+
+          <div class="charts-card">
+            <h2 class="chart-title">Ventas</h2>
+            <div id="area-chart"></div>
+          </div>
+
+        </div>
+      </main>
+      <!-- End Main -->
+
+    </div>
+
+    <!-- Scripts -->
+    <!-- ApexCharts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/apexcharts/3.35.5/apexcharts.min.js"></script>
+    <!-- Custom JS -->
+    <script src="scriptDash.js"></script>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+</html>

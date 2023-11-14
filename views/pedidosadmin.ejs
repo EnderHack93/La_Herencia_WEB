@@ -92,32 +92,30 @@
                             <h1>Lista de productos</h1>
                         </div>
                         <div>
-                            <button id="crearProductoModal"  onclick="abrirModal()">NUEVO CLIENTE</button>
+                            <button id="crearProductoModal"  onclick="abrirModal()">NUEVO Pedido</button>
                         </div>
                     
                         <table id="customers">
                         <tr>
-                            <th>Nombre</th>
-                            <th>Apellidos</th>
-                            <th>CI</th>
+                            <th>ID del pedido</th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
                             <th>Estado</th>
-                            <th>Telefono</th>
-                            <th>Correo</th>
+                            <th>Cliente</th>
                             <th>Acciones</th>
                         </tr>
-                        <% for (const persona of personas) { %>
-                            <tr class="product-row" data-product-id="<%= persona._id %>">
-                                <td><%= persona.nombres %></td>
-                                <td><%= persona.apellidos %></td>
-                                <td><%= persona.ci %></td>
-                                <td><%= persona.estado %></td>
-                                <td><%= persona.telefono %></td>
-                                <td><%= persona.correo %></td>  
+                        <% for (const pedido of pedidos) { %>
+                            <tr class="product-row" data-product-id="<%= pedido._id %>">
+                                <td><%= pedido.id_pedido %></td>
+                                <td><%= pedido.fecha %></td>
+                                <td><%= pedido.hora %></td>
+                                <td><%= pedido.estado %></td>
+                                <td><%= pedido.id_cliente %></td>
                               <td>
-                                <button type="button" class="btn btn-primary btn-edit" data-toggle="modal" data-target="#editModal" data-product-id="<%= persona._id %>"><i class="bi bi-pencil"></i></button>
+                                <button type="button" class="btn btn-primary btn-edit" data-toggle="modal" data-target="#editModal" data-product-id="<%= pedidos._id %>"><i class="bi bi-pencil"></i></button>
                   
                   
-                                <button type="button" class="btn btn-danger" data-product-id="<%= persona._id %>"><i class="bi bi-x-circle"></i></button>
+                                <button type="button" class="btn btn-danger" data-product-id="<%= pedidos._id %>"><i class="bi bi-x-circle"></i></button>
                               </td>
                             </tr>
                           <% } %>
@@ -207,18 +205,10 @@
 
   <div class="modal" id="modal">
     <div class="close-btn" onclick="cerrarModal()">&times;</div>
-    <form action="/crearCliente" method="post">
+    <form action="/crearcategorias" method="post">
     <!-- Campos del formulario de creación -->
-    <label for="nombre">Nombres del Cliente</label>
-    <input type="text" id="nombres" name="nombres" required>
-    <label for="nombre">Apellidos del Cliente</label>
-    <input type="text" id="nombres" name="apellidos" required>
-    <label for="nombre">CI del Cliente</label>
-    <input type="text" id="nombres" name="ci" required>
-    <label for="nombre">Correo del Cliente</label>
-    <input type="text" id="nombres" name="correo" required>
-    <label for="nombre">Contraseña del Cliente</label>
-    <input type="text" id="nombres" name="contrasena" required>
+    <label for="nombre">Nombre de la categoria</label>
+    <input type="text" id="nombre" name="nombre" required>
     <input type="submit">
   </form>
 </div>

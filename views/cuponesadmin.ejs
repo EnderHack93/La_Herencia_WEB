@@ -97,27 +97,25 @@
                     
                         <table id="customers">
                         <tr>
-                            <th>Nombre</th>
-                            <th>Apellidos</th>
-                            <th>CI</th>
+                            <th>Codigo</th>
+                            <th>Descuento</th>
+                            <th>Uso Maximo</th>
+                            <th>Uso Disponible</th>
                             <th>Estado</th>
-                            <th>Telefono</th>
-                            <th>Correo</th>
                             <th>Acciones</th>
                         </tr>
-                        <% for (const persona of personas) { %>
-                            <tr class="product-row" data-product-id="<%= persona._id %>">
-                                <td><%= persona.nombres %></td>
-                                <td><%= persona.apellidos %></td>
-                                <td><%= persona.ci %></td>
-                                <td><%= persona.estado %></td>
-                                <td><%= persona.telefono %></td>
-                                <td><%= persona.correo %></td>  
+                        <% for (const cupon of cupones) { %>
+                            <tr class="product-row" data-product-id="<%= cupon._id %>">
+                                <td><%= cupon.codigo %></td>
+                                <td><%= cupon.porcentajeDescuento %></td>
+                                <td><%= cupon.usosMaximos %></td>
+                                <td><%= cupon.usosDisponibles %></td>
+                                <td><%= cupon.estado %></td>
                               <td>
-                                <button type="button" class="btn btn-primary btn-edit" data-toggle="modal" data-target="#editModal" data-product-id="<%= persona._id %>"><i class="bi bi-pencil"></i></button>
+                                <button type="button" class="btn btn-primary btn-edit" data-toggle="modal" data-target="#editModal" data-product-id="<%= cupon._id %>"><i class="bi bi-pencil"></i></button>
                   
                   
-                                <button type="button" class="btn btn-danger" data-product-id="<%= persona._id %>"><i class="bi bi-x-circle"></i></button>
+                                <button type="button" class="btn btn-danger" data-product-id="<%= cupon._id %>"><i class="bi bi-x-circle"></i></button>
                               </td>
                             </tr>
                           <% } %>
@@ -207,18 +205,10 @@
 
   <div class="modal" id="modal">
     <div class="close-btn" onclick="cerrarModal()">&times;</div>
-    <form action="/crearCliente" method="post">
+    <form action="/crearcategorias" method="post">
     <!-- Campos del formulario de creación -->
-    <label for="nombre">Nombres del Cliente</label>
-    <input type="text" id="nombres" name="nombres" required>
-    <label for="nombre">Apellidos del Cliente</label>
-    <input type="text" id="nombres" name="apellidos" required>
-    <label for="nombre">CI del Cliente</label>
-    <input type="text" id="nombres" name="ci" required>
-    <label for="nombre">Correo del Cliente</label>
-    <input type="text" id="nombres" name="correo" required>
-    <label for="nombre">Contraseña del Cliente</label>
-    <input type="text" id="nombres" name="contrasena" required>
+    <label for="nombre">Nombre de la categoria</label>
+    <input type="text" id="nombre" name="nombre" required>
     <input type="submit">
   </form>
 </div>

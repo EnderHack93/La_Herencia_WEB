@@ -1,8 +1,8 @@
 import fetch from 'node-fetch';
 import axios from "axios";
-const getActiveClients = async (req, res) => {
+const getPedidos = async (req, res) => {
   try {
-    const response = await fetch('https://herencia-api.onrender.com/personas');
+    const response = await fetch('https://herencia-api.onrender.com/pedidos');
 
     if (!response) {
       throw new Error('Error al obtener datos de la API');
@@ -28,19 +28,19 @@ const getActiveClients = async (req, res) => {
     res.status(500).send('Error interno en el servidor');
   }
 };
-const verCClientes = async (req, res) => {
+const verPedidos = async (req, res) => {
 
-    const personas = await getActiveClients(); // Obtiene el array de categorías
+    const pedidos = await getPedidos(); // Obtiene el array de categorías
 
-    res.render('clientes', { personas });
+    res.render('pedidosadmin', { pedidos });
 
 };
- const axiosPostCrearCliente = async (req, res) => {
-  const { nombres,apellidos,ci,correo,contrasena} = req.body;
+ const axiosPostCrearcategorias = async (req, res) => {
+  const { nombre} = req.body;
   const formData = new FormData();
-  formData.append("nombres", nombres,"apellidos",apellidos,"ci",ci,"correo",correo,"password",contrasena);
+  formData.append("nombre", nombre);
    console.log(formData)
-  axios.post("https://herencia-api.onrender.com/personas",formData,{
+  axios.post("https://herencia-api.onrender.com/categorias",formData,{
     headers: {
       "Content-Type": "multipart/form-data",
     }
@@ -53,4 +53,4 @@ const verCClientes = async (req, res) => {
    });;
   
 };
-export {getActiveClients,verCClientes,axiosPostCrearCliente};
+export {verPedidos};
