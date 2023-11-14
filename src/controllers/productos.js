@@ -45,7 +45,7 @@ export const axiosPostCrearProductos = async (req, res) => {
     }
    })
    .then((response) => {
-     res.send(response.data);
+     res.redirect('/products');
    })
    .catch((error) => {
      res.send(error.response.data);
