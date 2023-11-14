@@ -36,21 +36,21 @@ const verCClientes = async (req, res) => {
 
 };
  const axiosPostCrearCliente = async (req, res) => {
-  const { nombres,apellidos,ci,correo,contrasena} = req.body;
+  const { nombres,apellidos,ci,correo,contrasena,telefono} = req.body;
   const formData = new FormData();
   formData.append("nombres", nombres);
   formData.append("apellidos",apellidos);
+  formData.append("telefono",telefono);
   formData.append("ci",ci);
   formData.append("correo",correo);
   formData.append("password",contrasena);
-   console.log(formData)
   axios.post("https://herencia-api.onrender.com/personas",formData,{
     headers: {
       "Content-Type": "multipart/form-data",
     }
    })
    .then((response) => {
-     res.send(response.data);
+     res.redirect("/clientes");
    })
    .catch((error) => {
      res.send(error.response.data);
