@@ -92,24 +92,32 @@
                             <h1>Lista de productos</h1>
                         </div>
                         <div>
-                            <button id="crearProductoModal"  onclick="abrirModal()">NUEVO PRODUCTO</button>
-
+                            <button id="crearProductoModal"  onclick="abrirModal()">NUEVO CLIENTE</button>
                         </div>
                     
                         <table id="customers">
                         <tr>
                             <th>Nombre</th>
+                            <th>Apellidos</th>
+                            <th>CI</th>
+                            <th>Estado</th>
+                            <th>Telefono</th>
+                            <th>Correo</th>
                             <th>Acciones</th>
                         </tr>
-                        <% for (const categoria of categorias) { %>
-                            <tr class="product-row" data-product-id="<%= categoria._id %>">
-                                <td><%= categoria.nombre %></td>
-                  
+                        <% for (const persona of personas) { %>
+                            <tr class="product-row" data-product-id="<%= persona._id %>">
+                                <td><%= persona.nombres %></td>
+                                <td><%= persona.apellidos %></td>
+                                <td><%= persona.ci %></td>
+                                <td><%= persona.estado %></td>
+                                <td><%= persona.telefono %></td>
+                                <td><%= persona.correo %></td>  
                               <td>
-                                <button type="button" class="btn btn-primary btn-edit" data-toggle="modal" data-target="#editModal" data-product-id="<%= categoria._id %>"><i class="bi bi-pencil"></i></button>
+                                <button type="button" class="btn btn-primary btn-edit" data-toggle="modal" data-target="#editModal" data-product-id="<%= persona._id %>"><i class="bi bi-pencil"></i></button>
                   
                   
-                                <button type="button" class="btn btn-danger" data-product-id="<%= categoria._id %>"><i class="bi bi-x-circle"></i></button>
+                                <button type="button" class="btn btn-danger" data-product-id="<%= persona._id %>"><i class="bi bi-x-circle"></i></button>
                               </td>
                             </tr>
                           <% } %>
