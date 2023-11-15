@@ -1,5 +1,6 @@
 import fetch from 'node-fetch';
 import axios from "axios";
+import FormData from 'form-data';
 const getPedidos = async (req, res) => {
   try {
     const response = await fetch('https://herencia-api.onrender.com/pedidos');

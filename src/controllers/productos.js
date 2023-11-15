@@ -1,6 +1,7 @@
 import fetch from "node-fetch";
 import axios from "axios";
 import { getActiveCategories } from "../controllers/categorias.js";
+import FormData from "form-data";
 const getActiveProducts = async (req, res) => {
   try {
     const response = await fetch("https://herencia-api.onrender.com/productos");
