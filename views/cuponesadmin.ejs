@@ -243,7 +243,7 @@ function cerrarModal() {
   
       $.ajax({
         type: "PUT",
-        url: `https://churrasqueriaherencia.onrender.com/desactivar/${productId}`, // Ruta de la API para desactivar el producto
+        url: `https://churrasqueriaherencia.onrender.com/:id/${productId}`, // Ruta de la API para desactivar el producto
         success: function (response) {
           // Maneja la respuesta si es necesario
           console.log(response); // Puedes mostrar un mensaje de éxito u otra acción aquí
