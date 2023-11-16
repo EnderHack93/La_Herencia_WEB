@@ -153,13 +153,10 @@ const editarProducto = async (req, res) => {
   
   const { nombreeditar, descripcioneditar, precioeditar, id_categoriaeditar, imageneditar, idProducto } = req.body;
   const formData = new FormData();
-  
   formData.append("nombre", nombreeditar);
   formData.append("descripcion", descripcioneditar);
   formData.append("precio", precioeditar);
   formData.append("id_categoria", id_categoriaeditar);
-  
-
   console.log(formData);
 
   axios
