@@ -150,29 +150,32 @@ const verCrearProductos = async (req, res) => {
 };
 
 const editarProducto = async (req, res) => {
-  const imgBlob = new Blob([imagen.buffer]);
-  const { nombreeditar,descripcioneditar,precioeditar,id_categoriaeditar,imageneditar,idProducto} = req.body;
-  const formData = new FormData();;
+  const imgBuffer = Buffer.from(imagen.buffer);
+  const { nombreeditar, descripcioneditar, precioeditar, id_categoriaeditar, imageneditar, idProducto } = req.body;
+  const formData = new FormData();
+
   formData.append("nombre", nombreeditar);
   formData.append("descripcion", descripcioneditar);
   formData.append("precio", precioeditar);
   formData.append("id_categoria", id_categoriaeditar);
-  formData.append("imageneditar", imgBlob,imageneditar.originalname);
-  
-   console.log(formData)
-  axios.put("https://herencia-api.onrender.com/categorias/${idProducto}",formData,{
-    headers: {
-      
-      "Content-Type": "multipart/form-data",
-    }
-   })
-   .then((response) => {
-     res.send(response.data);
-   })
-   .catch((error) => {
-     res.send(error.response.data);
-   });;
+  formData.append("imageneditar", imgBuffer, imageneditar.originalname);
+
+  console.log(formData);
+
+  axios
+    .put(`https://herencia-api.onrender.com/categorias/${idProducto}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((response) => {
+      res.send(response.data);
+    })
+    .catch((error) => {
+      res.send(error.response.data);
+    });
 };
+
 const verEditarProducto = async (req, res) => {
   try {
     const id = req.params.id;
