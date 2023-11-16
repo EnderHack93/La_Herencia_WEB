@@ -428,38 +428,38 @@ function abrirModaleditar(btn) {
 }
 
 function guardarCambios() {
-    const idProducto = $("#idProducto").val();
-    const nombre = $("#editNombre").val();
-    const descripcion = $("#editDescripcion").val();
-    const precio = $("#editPrecio").val();
-    const idCategoria = $("#categoria").val();
-    const imagen = $("#imageneditar")[0].files[0];
+    const idProducto = $("#idProducto").val();
+    const nombre = $("#editNombre").val();
+    const descripcion = $("#editDescripcion").val();
+    const precio = $("#editPrecio").val();
+    const idCategoria = $("#categoria").val();
+    const imagen = $("#imageneditar")[0].files[0];
 
-    const formData = new FormData();
-    formData.append("id_producto", idProducto);
-    formData.append("nombre", nombre);
-    formData.append("descripcion", descripcion);
-    formData.append("precio", precio);
-    formData.append("id_categoria", idCategoria);
-    formData.append("imagen", imagen);
+    const formData = new FormData();
+    formData.append("id_producto", idProducto);
+    formData.append("nombre", nombre);
+    formData.append("descripcion", descripcion);
+    formData.append("precio", precio);
+    formData.append("id_categoria", idCategoria);
+    formData.append("imagen", imagen);
 
-    $.ajax({
-       
-        type: "PUT",
-        url: `https://churrasquerialaherencia.onrender.com/productos/editar/${idProducto}`,
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: function (response) {
-            console.log("Datos actualizados con éxito:", response);
-            cerrarModaleditar();
-        },
-        error: function (error) {
-            console.log("Datos no actualizados con éxito:", error);
-            console.error("Error al actualizar los datos:", error);
-        },
-    });
+    $.ajax({
+        type: "PUT",
+        url: `https://churrasquerialaherencia.onrender.com/productos/editar/${idProducto}`,
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (response) {
+            console.log("Datos actualizados con éxito:", response);
+            cerrarModaleditar();
+        },
+        error: function (error) {
+            console.log("Datos no actualizados con éxito:", error);
+            console.error("Error al actualizar los datos:", error);
+        },
+    });
 }
+
 
 </script>
      
