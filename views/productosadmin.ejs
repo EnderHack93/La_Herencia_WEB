@@ -9,6 +9,10 @@
    
  
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
     <style>
         #customers {
           font-family: Arial, Helvetica, sans-serif;
@@ -113,7 +117,7 @@
                              
                              
                               <td>
-                                <button type="button" class="btn btn-primary btn-edit" data-toggle="modal" data-target="#editModal" onclick="abrirModaleditar()"><i class="bi bi-pencil"></i></button>
+                                <button type="button" class="btn btn-primary btn-edit" data-product-id="<%= product.id_producto %>" data-toggle="modal" data-target="#editModal" onclick="abrirModaleditar(this)"><i class="bi bi-pencil"></i></button>
                  
                  
                                 <button type="button" class="btn btn-danger" data-product-id="<%= product.id_producto %>"><i class="bi bi-x-circle"></i></button>
@@ -132,33 +136,7 @@
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
  
-    <script>
- 
-        //abrir formulario
-        function abrir(){
-            document.getElementById("formularioProducto").style.display="block";
-        }
- 
- 
-        //Menu toggle
-        let toggle = document.querySelector('.toggle');
-        let navigation = document.querySelector('.navigation');
-        let main = document.querySelector('main');
- 
-        toggle.onclick = function(){
-            navigation.classList.toggle('active');
-            main.classList.toggle('active');
-        }
- 
- 
-        //Hovered class in selected list item
-        let list = document.querySelectorAll('.navigation li');
-        function activeLink(){
-            list.forEach((item) => item.classList.remove('hovered'));
-            this.classList.add('hovered');
-        }
-        list.forEach((item) => item.addEventListener('mouseover',activeLink));
-    </script>
+    
  
        
   <!-- Modal de creación -->
@@ -268,92 +246,97 @@
   </div>
 </div>
  
-<!-- Modal de creación -->
+<!-- Modal de edicion -->
+
+
+<!-- Agrega IDs a los elementos del modal editar -->
 <div class="overlay" id="overlayeditar"></div>
- 
+
 <div class="modal" id="modaleditar">
-  <div class="close-btn" onclick="cerrarModaleditar()">&times;</div>
- 
-  <div class="productsBox">
-    <div class="products">
-        <section class="form-register">
-            <div>
-                <h1>Productos</h1>
-            </div>
-            
-            <form
-            class="form"
-            action="/productoseditar"
-            method="POST"
-            enctype="multipart/form-data">
-            <p class="title">Editar Productos</p>
-            <br />
+    <div class="close-btn" onclick="cerrarModaleditar()">&times;</div>
 
-            <label>
-                <span>Nombre del producto</span>
-                <input
-                type="text"
-                name="nombre"
-                id="nombre"
-                placeholder="Nombre del producto"
-                class="input"
-                />
-                
-            </label>
+    <div class="productsBox">
+        <div class="products">
+            <section class="form-register">
+                <div>
+                    <h1>Productos</h1>
+                </div>
 
-            <label>
-                <span>Descripción</span>
-                <input
-                type="text"
-                name="descripcion"
-                id="descripcion"
-                placeholder="Descripción...."
-                class="input"
-                />
-                
-            </label>
+                <form id="editarForm" class="form">
+                    <input type="hidden" name="id_producto" id="editIdProducto" value="" />
+                    <!-- Agrega IDs a los campos del formulario -->
+                    <label>
+                        <span>Nombre del producto</span>
+                        <input
+                            type="text"
+                            name="nombreeditar"
+                            id="editNombre"
+                            placeholder="Nombre del producto"
+                            class="input"
+                        />
+                    </label>
 
-            <label>
-                <span>Precio</span>
-                <input
-                type="text"
-                name="precio"
-                id="precio"
-                placeholder="100"
-                class="input"
-                />
-                
-            </label>
-            <!--fats fats no te olvides de los estilos crack-->
-            <label for="id_categoria">Categoría</label>
-            <select name="id_categoria" id="categoria" class="input">
-              <option value="">Selecciona una categoría</option>
-              <% for (const categoria of categorias) { %>
-                <option value="<%= categoria.id_categoria %>">
-                  <%= categoria.nombre %>
-                </option>
-                <% } %>
-                
-            </select>
-            <label for="imagen">Imagen</label>
-            <input type="file" name="imagen" id="imagen" class="input" />
-            <img
-                id="previewImage"
-                src=""
-                alt="Preview Image"
-                style="max-width: 400px; max-height: 400px; display: none"
-            />
+                    <label>
+                        <span>Descripción</span>
+                        <input
+                            type="text"
+                            name="descripcioneditar"
+                            id="editDescripcion"
+                            placeholder="Descripción...."
+                            class="input"
+                        />
+                    </label>
 
-            <button class="submit" type="submit">Registrar</button>
-            </form>
-        </section>
+                    <label>
+                        <span>Precio</span>
+                        <input
+                            type="text"
+                            name="precioeditar"
+                            id="editPrecio"
+                            placeholder="100"
+                            class="input"
+                        />
+                    </label>
+                    <input
+                        type="text"
+                        name="idProducto"
+                        id="idProducto"
+                        style="display: none;"
+                    />
+                    <!-- Agrega el campo de categoría con el ID correcto -->
+                    <label for="id_categoriaeditar">Categoría</label>
+                    <select name="id_categoriaeditar" id="categoria" class="input">
+                        <option value="">Selecciona una categoría</option>
+                        <% for (const categoria of categorias) { %>
+                            <option value="<%= categoria.id_categoria %>">
+                                <%= categoria.nombre %>
+                            </option>
+                        <% } %>
+                    </select>
+
+                    <label for="imageneditar">Imagen</label>
+                    <input type="file" name="imageneditar" id="imageneditar" class="input" />
+                    <img
+                        id="previewImage"
+                        src=""
+                        alt="Preview Image"
+                        style="max-width: 400px; max-height: 400px; display: none"
+                    />
+
+                    <button type="button" onclick="guardarCambios()">Guardar Cambios</button>
+                </form>
+            </section>
+        </div>
     </div>
 </div>
-</div>
+
+
  
  
 <!-- Resto de tu contenido y scripts -->
- 
+
+
+
 <script>
 function abrirModal() {
     document.getElementById("overlay").style.display = "block";
@@ -365,108 +348,120 @@ function cerrarModal() {
     document.getElementById("modal").style.display = "none";
 }
  
-function abrirModaleditar() {
+function obtenerProductoPorId(productId) {
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            type: "GET",
+            url: `https://herencia-api.onrender.com/productos/${productId}`,
+            success: function (response) {
+                console.log("Respuesta de la API:", response);
+
+                // Verifica si la respuesta contiene datos válidos
+                if (response && response.id_producto !== undefined && response.id_producto !== null) {
+                    resolve(response);
+                } else {
+                    reject("La respuesta del servidor no contiene datos válidos para el producto.");
+                }
+            },
+            error: function (error) {
+                reject("Error al procesar los datos del producto: " + JSON.stringify(error));
+            },
+        });
+    });
+}
+
+
+
+
+// Abre el modal y carga los detalles del producto
+function abrirModaleditar(btn) {
     document.getElementById("overlayeditar").style.display = "block";
     document.getElementById("modaleditar").style.display = "block";
-}
- 
-function cerrarModaleditar() {
-    document.getElementById("overlayeditar").style.display = "none";
-    document.getElementById("modaleditar").style.display = "none";
-}
-</script>
-     
-    </body>
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script>
-      $(document).ready(function () {
-    $(".btn-danger").on("click", function () {
-      const productId = $(this).data("product-id");
- 
-      $.ajax({
-        type: "DELETE",
-        url: `https://herencia-api.onrender.com/productos/${productId}`, // Ruta de la API para desactivar el producto
-        success: function (response) {
-          // Maneja la respuesta si es necesario
-          console.log(response); // Puedes mostrar un mensaje de éxito u otra acción aquí
-          location.reload()
-          // Elimina la fila de la tabla correspondiente al producto desactivado
-          $(`.product-row[data-product-id="${productId}"]`).remove();
-        },
-        error: function (error) {
-         
-          console.error(productId); // Maneja el error si es necesario
-        },
-      });
-    });
-  });
- 
-    </script>
-   
-      <!--la wea para editar -->
-      <script>
-        $(document).ready(function () {
-      // Función para obtener los detalles del producto por su ID
-      function obtenerProductoPorId(productId, callback) {
-        $.ajax({
-          type: "GET",
-          url: `https://churrasqueriaherencia.onrender.com/producto/${productId}`,
-          success: function (response) {
-            callback(response.product);
-          },
-          error: function (error) {
-            console.error(error);
-          },
+
+    // Obtén el ID del producto desde el botón
+    const productIdToEdit = $(btn).data("product-id");
+    console.log("Empezando el AJAX para el producto con ID:", productIdToEdit);
+
+    // Realiza una solicitud AJAX para obtener los detalles del producto
+    obtenerProductoPorId(productIdToEdit)
+        .then((product) => {
+            console.log("Datos del producto obtenidos con éxito:", product);
+
+            // Verifica si la respuesta contiene datos válidos
+            if (product && product.id_producto !== undefined && product.id_producto !== null) {
+                const { nombre, descripcion, precio, imagen } = product;
+
+                console.log("Nombre:", nombre);
+                console.log("Descripción:", descripcion);
+                console.log("Precio:", precio);
+                console.log("Imagen:", imagen);
+
+                $("#editNombre").val(nombre);
+                $("#editDescripcion").val(descripcion);
+                $("#editPrecio").val(precio);
+                $("#idProducto").val(productIdToEdit);
+                $("#previewImage").attr("src", imagen);
+                $("#previewImage").css("display", "block");
+                $("#editIdProducto").val(productIdToEdit);
+                $("#saveChanges").data("product-id", productIdToEdit);
+            } else {
+                console.error("La respuesta del servidor no contiene datos válidos para el producto.");
+            }
+        })
+        .catch((error) => {
+            console.error("Error al obtener los detalles del producto:", error);
         });
-      }
-   
-      // Abre el modal y carga los detalles del producto
-      $(".btn-edit").on("click", function () {
-        const productIdToEdit = $(this).data("product-id");
-   
-        obtenerProductoPorId(productIdToEdit, function (product) {
-          $("#editNombre").val(product.nombre);
-          $("#editDescripcion").val(product.descripcion);
-          $("#editPrecio").val(product.precio);
-   
-          // Mostrar la imagen antigua en el modal
-          $("#editPreviewImage").attr("src", product.imagen);
-          $("#editPreviewImage").css("display", "block");
-   
-          // Guarda el ID del producto en el botón "Guardar Cambios"
-          $("#saveChanges").data("product-id", productIdToEdit);
-        });
-      });
-   
-      // Guarda los cambios al hacer clic en el botón "Guardar Cambios"
-      $("#saveChanges").on("click", function () {
-      const formData = new FormData(document.getElementById("editForm"));
-      const productIdToEdit = $(this).data("product-id");
-   
-      // Añade el archivo a la solicitud AJAX
-      formData.append("nuevaImagen", $("#editNuevaImagen"));
-   
-      // Envía la solicitud AJAX
-      $.ajax({
+}
+
+    // Cierra el modal de edición
+    function cerrarModaleditar() {
+        document.getElementById("overlayeditar").style.display = "none";
+        document.getElementById("modaleditar").style.display = "none";
+    }
+
+   //put del ajax
+
+   function obtenerFormData() {
+    const formData = new FormData(document.getElementById("editForm"));
+    formData.append("_method", "PUT");
+    return formData;
+}
+
+function guardarCambios() {
+    const idProducto = $("#idProducto").val();
+    const nombre = $("#editNombre").val();
+    const descripcion = $("#editDescripcion").val();
+    const precio = $("#editPrecio").val();
+    const idCategoria = $("#categoria").val();
+    const imagen = $("#imageneditar")[0].files[0];
+
+    const formData = new FormData();
+    formData.append("id_producto", idProducto);
+    formData.append("nombre", nombre);
+    formData.append("descripcion", descripcion);
+    formData.append("precio", precio);
+    formData.append("id_categoria", idCategoria);
+    formData.append("imagen", imagen);
+
+    $.ajax({
         type: "PUT",
-        url: `https://churrasqueriaherencia.onrender.com/editar/${productIdToEdit}`,
+        url: `http://localhost:3000/editar/${idProducto}`,
         data: formData,
         contentType: false,
         processData: false,
         success: function (response) {
-          if(response.message == "Producto editado"){
-            console.log(response);
-            location.reload();
-          }
+            console.log("Datos actualizados con éxito:", response);
+            cerrarModaleditar();
         },
         error: function (error) {
-          console.error(error);
+            console.error("Error al actualizar los datos:", error);
         },
-      });
     });
-    });
+}
+
+</script>
+     
+    </body>
    
-    </script>
-       
 </body>
 </html>

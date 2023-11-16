@@ -106,7 +106,7 @@
                                 <td><%= categoria.nombre %></td>
                   
                               <td>
-                                <button type="button" class="btn btn-primary btn-edit" data-toggle="modal" data-target="#editModal" data-product-id="<%= categoria._id %>"><i class="bi bi-pencil"></i></button>
+                                <button type="button" class="btn btn-primary btn-edit" data-product-id="<%= product.id_categoria %>" data-toggle="modal" data-target="#editModal" onclick="abrirModaleditar(this)"><i class="bi bi-pencil"></i></button>
                   
                   
                                 <button type="button" class="btn btn-danger" data-product-id="<%= categoria._id %>"><i class="bi bi-x-circle"></i></button>
@@ -153,47 +153,8 @@
         list.forEach((item) => item.addEventListener('mouseover',activeLink));
     </script>
 
-       
-<!--modal para editar-->
-<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="editModalLabel">Editar Producto</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <!-- Aquí colocarás los campos de edición, por ejemplo: -->
-          <form id="editForm" enctype="multipart/form-data">
-            <label for="editNombre">Nombre de categoria</label>
-            <input type="text" id="editNombre" name="nombre" class="form-control">
-            
-            <label for="editDescripcion">Descripción</label>
-            <input type="text" id="editDescripcion" name="descripcion" class="form-control">
-            
-            <label for="editPrecio">Precio</label>
-            <input type="text" id="editPrecio" name="precio" class="form-control">
-          
-            <!-- Imagen antigua -->
-            <img id="editPreviewImage" src="" alt="Preview Image" style="max-width: 400px; max-height: 400px; display: none">
-            
-            <!-- Input para cargar una nueva imagen -->
-            <input type="file" name="nuevaImagen" id="editNuevaImagen" class="input" enctype="multipart/form-data" />
-  
-          </form>        
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-          <button type="button" class="btn btn-primary" id="saveChanges">Guardar Cambios</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!--modal para crear-->
 
-  <!-- Modal de creación -->
+ 
   <!-- Modal de creación -->
   <div class="overlay" id="overlay"></div>
 
@@ -206,10 +167,47 @@
     <input type="submit">
   </form>
 </div>
+<!--Modal de edicion-->
+  <!-- Modal de edicion -->
 
-  
 
-<!-- Resto de tu contenido y scripts -->
+<!-- Agrega IDs a los elementos del modal editar -->
+<div class="overlay" id="overlayeditar"></div>
+
+<div class="modal" id="modaleditar">
+    <div class="close-btn" onclick="cerrarModaleditar()">&times;</div>
+
+    <div class="productsBox">
+        <div class="products">
+            <section class="form-register">
+                <div>
+                    <h1>Productos</h1>
+                </div>
+
+                <form
+                class="form"
+                action="/productoseditar"
+                method="POST"
+                enctype="multipart/form-data">
+                    <!-- Agrega IDs a los campos del formulario -->
+                    <label>
+                        <span>Nombre del producto</span>
+                        <input
+                        type="text"
+                        name="nombreeditar"
+                        id="editNombre"
+                        placeholder="Nombre del producto"
+                        class="input"
+                        />
+                    </label>
+
+                    <button class="submit" type="submit">Registrar</button>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+
 
 <script>
 function abrirModal() {
@@ -222,6 +220,81 @@ function cerrarModal() {
     document.getElementById("modal").style.display = "none";
 }
 
+function obtenerProductoPorId(productId, callback) {
+  console.log("empezando el ajax")
+        $.ajax({
+            type: "GET",
+            url: `https://herencia-api.onrender.com/categorias/${productId}`,
+            success: function (response) {
+                callback(response.product);
+                console.log(response)
+            },
+            error: function (error) {
+                console.error(error);
+                console.log(error)
+            },
+        });
+    }
+
+    // Abre el modal y carga los detalles del producto
+    function abrirModaleditar(btn) {
+    document.getElementById("overlayeditar").style.display = "block";
+    document.getElementById("modaleditar").style.display = "block";
+
+    // Obtén el ID del producto desde el botón
+    const productIdToEdit = $(btn).data("product-id");
+    console.log(productIdToEdit);
+
+    // Realiza una solicitud AJAX para obtener los detalles del producto
+    obtenerProductoPorId(productIdToEdit, function (product) {
+        console.log("empezando el ajax");
+        $("#editNombre").val(product.nombre);
+        $("#editDescripcion").val(product.descripcion);
+        $("#editPrecio").val(product.precio);
+
+        // Mostrar la imagen antigua en el modal
+        $("#previewImage").attr("src", product.imagen);
+        $("#previewImage").css("display", "block");
+
+        // Guarda el ID del producto en el botón "Guardar Cambios"
+        $("#saveChanges").data("product-id", productIdToEdit);
+    });
+}
+
+
+    // Cierra el modal de edición
+    function cerrarModaleditar() {
+        document.getElementById("overlayeditar").style.display = "none";
+        document.getElementById("modaleditar").style.display = "none";
+    }
+
+    // Guarda los cambios al hacer clic en el botón "Guardar Cambios"
+    $("#saveChanges").on("click", function () {
+        const formData = new FormData(document.getElementById("editForm"));
+        const productIdToEdit = $(this).data("product-id");
+
+        // Añade el archivo a la solicitud AJAX
+        formData.append("nuevaImagen", $("#editNuevaImagen"));
+
+        // Envía la solicitud AJAX
+        $.ajax({
+            type: "PUT",
+            url: `https://churrasqueriaherencia.onrender.com/editar/${productIdToEdit}`,
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                if (response.message == "Producto editado") {
+                    console.log(response);
+                    location.reload();
+                }
+            },
+            error: function (error) {
+                console.error(error);
+            },
+        });
+    });
+
 
 </script>
       
@@ -233,8 +306,8 @@ function cerrarModal() {
       const productId = $(this).data("product-id");
   
       $.ajax({
-        type: "PUT",
-        url: `https://churrasqueriaherencia.onrender.com/desactivar/${productId}`, // Ruta de la API para desactivar el producto
+        type: "Delete",
+        url: `https://herencia-api.onrender.com/categorias/desactivar/${productId}`, // Ruta de la API para desactivar el producto
         success: function (response) {
           // Maneja la respuesta si es necesario
           console.log(response); // Puedes mostrar un mensaje de éxito u otra acción aquí
@@ -248,73 +321,7 @@ function cerrarModal() {
       });
     });
   });
-  
-    </script>
-    
-      <!--la wea para editar -->
-      <script>
-        $(document).ready(function () {
-      // Función para obtener los detalles del producto por su ID
-      function obtenerProductoPorId(productId, callback) {
-        $.ajax({
-          type: "GET",
-          url: `https://churrasqueriaherencia.onrender.com/producto/${productId}`,
-          success: function (response) {
-            callback(response.product);
-          },
-          error: function (error) {
-            console.error(error);
-          },
-        });
-      }
-    
-      // Abre el modal y carga los detalles del producto
-      $(".btn-edit").on("click", function () {
-        const productIdToEdit = $(this).data("product-id");
-    
-        obtenerProductoPorId(productIdToEdit, function (product) {
-          $("#editNombre").val(product.nombre);
-          $("#editDescripcion").val(product.descripcion);
-          $("#editPrecio").val(product.precio);
-    
-          // Mostrar la imagen antigua en el modal
-          $("#editPreviewImage").attr("src", product.imagen);
-          $("#editPreviewImage").css("display", "block");
-    
-          // Guarda el ID del producto en el botón "Guardar Cambios"
-          $("#saveChanges").data("product-id", productIdToEdit);
-        });
-      });
-    
-      // Guarda los cambios al hacer clic en el botón "Guardar Cambios"
-      $("#saveChanges").on("click", function () {
-      const formData = new FormData(document.getElementById("editForm"));
-      const productIdToEdit = $(this).data("product-id");
-    
-      // Añade el archivo a la solicitud AJAX
-      formData.append("nuevaImagen", $("#editNuevaImagen"));
-    
-      // Envía la solicitud AJAX
-      $.ajax({
-        type: "PUT",
-        url: `https://churrasqueriaherencia.onrender.com/editar/${productIdToEdit}`,
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: function (response) {
-          if(response.message == "Producto editado"){
-            console.log(response);
-            location.reload();
-          }
-        },
-        error: function (error) {
-          console.error(error);
-        },
-      });
-    });
-    });
-    
-    </script>
+</script>
        
 </body>
 </html>
