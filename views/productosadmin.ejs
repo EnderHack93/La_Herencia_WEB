@@ -444,6 +444,7 @@ function guardarCambios() {
     formData.append("imagen", imagen);
 
     $.ajax({
+       
         type: "PUT",
         url: `https://churrasquerialaherencia.onrender.com/editar/${idProducto}`,
         data: formData,
@@ -454,6 +455,7 @@ function guardarCambios() {
             cerrarModaleditar();
         },
         error: function (error) {
+            console.log("Datos no actualizados con éxito:", error);
             console.error("Error al actualizar los datos:", error);
         },
     });
