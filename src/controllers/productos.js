@@ -163,7 +163,7 @@ const editarProducto = async (req, res) => {
   console.log(formData);
 
   axios
-    .put(`https://herencia-api.onrender.com/categorias/${idProducto}`, formData, {
+    .put(`https://herencia-api.onrender.com/productos/${idProducto}`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

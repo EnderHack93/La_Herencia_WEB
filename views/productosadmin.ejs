@@ -9,7 +9,6 @@
    
  
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 
@@ -305,7 +304,7 @@
                     />
                     <!-- Agrega el campo de categoría con el ID correcto -->
                     <label for="id_categoriaeditar">Categoría</label>
-                    <select name="id_categoriaeditar" id="categoria" class="input">
+                    <select name="id_categoriaeditar" id="categoriaeditar" class="input">
                         <option value="">Selecciona una categoría</option>
                         <% for (const categoria of categorias) { %>
                             <option value="<%= categoria.id_categoria %>">
@@ -317,7 +316,7 @@
                     <label for="imageneditar">Imagen</label>
                     <input type="file" name="imageneditar" id="imageneditar" class="input" />
                     <img
-                        id="previewImage"
+                        id="previewImageEditar"
                         src=""
                         alt="Preview Image"
                         style="max-width: 400px; max-height: 400px; display: none"
@@ -333,7 +332,6 @@
 
  
  
-<!-- Resto de tu contenido y scripts -->
 
 
 
@@ -381,39 +379,6 @@ function abrirModaleditar(btn) {
     // Obtén el ID del producto desde el botón
     const productIdToEdit = $(btn).data("product-id");
     console.log("Empezando el AJAX para el producto con ID:", productIdToEdit);
-    function guardarCambios() {
-    const idProducto = $("#idProducto").val();
-    const nombre = $("#editNombre").val();
-    const descripcion = $("#editDescripcion").val();
-    const precio = $("#editPrecio").val();
-    const idCategoria = $("#categoria").val();
-    const imagen = $("#imageneditar")[0].files[0];
-
-    const formData = new FormData();
-    formData.append("id_producto", idProducto);
-    formData.append("nombre", nombre);
-    formData.append("descripcion", descripcion);
-    formData.append("precio", precio);
-    formData.append("id_categoria", idCategoria);
-    formData.append("imagen", imagen);
-
-    $.ajax({
-       
-        type: "PUT",
-        url: `https://churrasquerialaherencia.onrender.com/productos/editar/${idProducto}`,
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: function (response) {
-            console.log("Datos actualizados con éxito:", response);
-            cerrarModaleditar();
-        },
-        error: function (error) {
-            console.log("Datos no actualizados con éxito:", error);
-            console.error("Error al actualizar los datos:", error);
-        },
-    });
-}
     // Realiza una solicitud AJAX para obtener los detalles del producto
     obtenerProductoPorId(productIdToEdit)
         .then((product) => {
@@ -453,10 +418,37 @@ function abrirModaleditar(btn) {
 
    //put del ajax
 
-   function obtenerFormData() {
-    const formData = new FormData(document.getElementById("editForm"));
-    formData.append("_method", "PUT");
-    return formData;
+   function guardarCambios() {
+    const idProducto = $("#idProducto").val();
+    const nombre = $("#editNombre").val();
+    const descripcion = $("#editDescripcion").val();
+    const precio = $("#editPrecio").val();
+    const idCategoria = $("#categoriaeditar").val(); // Cambia a categoriaeditar
+    const imagen = $("#imageneditar")[0].files[0];
+
+    const formData = new FormData();
+    formData.append("id_producto", idProducto);
+    formData.append("nombre", nombre);
+    formData.append("descripcion", descripcion);
+    formData.append("precio", precio);
+    formData.append("id_categoria", idCategoria);
+    formData.append("imagen", imagen);
+
+    // Realiza una solicitud AJAX tipo PUT
+    $.ajax({
+        type: "PUT",
+        url: `http://localhost:3000/productos/editar/${idProducto}`,
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (response) {
+            console.log("Datos actualizados con éxito:", response);
+            cerrarModaleditar();
+        },
+        error: function (error) {
+            console.error("Error al actualizar los datos:", error);
+        },
+    });
 }
 
 

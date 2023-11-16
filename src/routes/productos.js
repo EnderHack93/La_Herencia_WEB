@@ -10,7 +10,7 @@ router.get("/",getActiveProducts)
 router.get("/products", verproductostabla);
 router.get("/crear",verCrearProductos)
 
-router.put("/editar/:id",editarProducto)
+router.put("/productos/editar/:id",editarProducto)
 //router.get("/crear",getCrearProductos)
 router.post("/productos",axiosPostCrearProductos)
 
