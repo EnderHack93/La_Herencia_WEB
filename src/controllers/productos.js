@@ -151,8 +151,9 @@ const verCrearProductos = async (req, res) => {
 
 const editarProducto = async (req, res) => {
   const imgBuffer = Buffer.from(imagen.buffer);
-  const imagen = req.files.find((f) => f.fieldname === "imageneditar");
+  
   const { nombreeditar, descripcioneditar, precioeditar, id_categoriaeditar, imageneditar, idProducto } = req.body;
+  const imagen = req.files.find((f) => f.fieldname === "imageneditar");
   const formData = new FormData();
 
   formData.append("nombre", nombreeditar);
