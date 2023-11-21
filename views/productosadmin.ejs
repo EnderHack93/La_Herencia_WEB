@@ -246,9 +246,6 @@
 </div>
  
 <!-- Modal de edicion -->
-
-
-<!-- Agrega IDs a los elementos del modal editar -->
 <div class="overlay" id="overlayeditar"></div>
 
 <div class="modal" id="modaleditar">
@@ -419,11 +416,11 @@ function abrirModaleditar(btn) {
    //put del ajax
 
    function guardarCambios() {
-    const idProducto = $("#idProducto").val();
+    const idProducto = $("#editIdProducto").val();
     const nombre = $("#editNombre").val();
     const descripcion = $("#editDescripcion").val();
     const precio = $("#editPrecio").val();
-    const idCategoria = $("#categoriaeditar").val(); // Cambia a categoriaeditar
+    const idCategoria = $("#categoriaeditar").val();
     const imagen = $("#imageneditar")[0].files[0];
 
     const formData = new FormData();
@@ -434,22 +431,23 @@ function abrirModaleditar(btn) {
     formData.append("id_categoria", idCategoria);
     formData.append("imagen", imagen);
 
-    // Realiza una solicitud AJAX tipo PUT
+    // Configuración para realizar una solicitud PUT
     $.ajax({
         type: "PUT",
-        url: `https://churrasquerialaherencia.onrender.com/productos/editar/${idProducto}`,
+        url: `https://herencia-api.onrender.com/productos/${idProducto}`,
         data: formData,
         contentType: false,
         processData: false,
         success: function (response) {
-            console.log("Datos actualizados con éxito:", response);
             cerrarModaleditar();
+            location.reload();
         },
         error: function (error) {
             console.error("Error al actualizar los datos:", error);
         },
     });
 }
+
 
 
 
