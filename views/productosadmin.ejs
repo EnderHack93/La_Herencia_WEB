@@ -5,18 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>La Herencia</title>
     <link rel="stylesheet" type="text/css" href="/css/miestilacho.css">
-    <link rel="stylesheet" href="/css/productos/crearProductos.css">
    
  
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
     <style>
         #customers {
           font-family: Arial, Helvetica, sans-serif;
           border-collapse: collapse;
           width: 100%;
+        }
+        ul{
+           padding-left: 0; 
+        }
+        #previewImage{
+          width: 300px;
         }
        
         #customers td, #customers th {
@@ -48,21 +53,17 @@
               display: none;
               position: fixed;
               top: 0;
-              left: 0;
+              left: -10;
               width: 100%;
               height: 100%;
-              background: rgba(0, 0, 0, 0.5);
+              background: rgba(255, 0, 0, 0.075);
           }
  
           /* Estilos para el modal */
           .modal {
               display: none;
-              position: fixed;
-              top: 50%;
-              left: 50%;
-              transform: translate(-50%, -50%);
-              padding: 20px;
-              background: #fff;
+
+              background: rgba(0, 0, 0, 0.507);
               z-index: 1000;
           }
  
@@ -72,6 +73,13 @@
               top: 10px;
               right: 10px;
               cursor: pointer;
+          }
+          .productsBox{
+            max-width: fit-content;
+            align-self: center;
+          }
+          form label span{
+            justify-content: left;
           }
  
  
@@ -95,35 +103,37 @@
                             <h1>Lista de productos</h1>
                         </div>
                         <div>
-                            <button id="crearProductoModal"  onclick="abrirModal()">NUEVO PRODUCTO</button>
+                            <button id="crearProductoModal"  onclick="abrirModal()" class="btn btn-primary mb-3">NUEVO PRODUCTO</button>
  
                         </div>
                    
-                        <table id="customers">
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Imagen</th>
-                            <th>Descripcion</th>
-                            <th>Precio</th>
-                            <th>Acciones</th>
-                        </tr>
-                        <% for (const product of productos) { %>
-                            <tr class="product-row" data-product-id="<%= product._id %>">
-                                <td><%= product.nombre %></td>
-                                <td><img src="<%= product.imagen %>" width="120px" height="120px"></td>
-                                <td><%= product.descripcion %></td>
-                              <td><%= product.precio %></td>
-                             
-                             
-                              <td>
-                                <button type="button" class="btn btn-primary btn-edit" data-product-id="<%= product.id_producto %>" data-toggle="modal" data-target="#editModal" onclick="abrirModaleditar(this)"><i class="bi bi-pencil"></i></button>
-                 
-                 
-                                <button type="button" class="btn btn-danger" data-product-id="<%= product.id_producto %>"><i class="bi bi-x-circle"></i></button>
-                              </td>
-                            </tr>
-                          <% } %>
-                        </table>
+                        <div class="table-responsive">
+                            <table id="customers" class="table">
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Imagen</th>
+                                    <th>Descripcion</th>
+                                    <th>Precio</th>
+                                    <th>Acciones</th>
+                                </tr>
+                                <% for (const product of productos) { %>
+                                    <tr class="product-row" data-product-id="<%= product._id %>">
+                                        <td><%= product.nombre %></td>
+                                        <td><img src="<%= product.imagen %>" width="120px" height="120px"></td>
+                                        <td><%= product.descripcion %></td>
+                                      <td><%= product.precio %></td>
+                                     
+                                     
+                                      <td>
+                                        <button type="button" class="btn btn-primary btn-edit" data-product-id="<%= product.id_producto %>" data-toggle="modal" data-target="#editModal" onclick="abrirModaleditar(this)"><i class="bi bi-pencil"></i></button>
+                         
+                         
+                                        <button type="button" class="btn btn-danger" data-product-id="<%= product.id_producto %>"><i class="bi bi-x-circle"></i></button>
+                                      </td>
+                                    </tr>
+                                  <% } %>
+                                </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -141,189 +151,229 @@
   <!-- Modal de creación -->
   <div class="overlay" id="overlay"></div>
  
-  <div class="modal" id="modal">
-    <div class="close-btn" onclick="cerrarModal()">&times;</div>
+  <center>
+    <div class="modal" id="modal">
    
-    <div class="productsBox">
-      <div class="products">
-          <section class="form-register">
-              <div>
-                  <h1>Productos</h1>
-              </div>
-              
-              <form
-              class="form"
-              action="/productos"
-              method="POST"
-              enctype="multipart/form-data">
-              <p class="title">Registrar nuevo producto</p>
-              <br />
-
-              <label>
-                  <span>Nombre del producto</span>
-                  <input
-                  type="text"
-                  name="nombre"
-                  id="nombre"
-                  placeholder="Nombre del producto"
-                  class="input"
+        <div class="productsBox card">
+          <div class="products">
+              <section class="form-register">
+                  <div>
+                      <h1>Productos</h1>
+                  </div>
+                  
+                  <form
+                  class="form"
+                  action="/productos"
+                  method="POST"
+                  enctype="multipart/form-data">
+                  <p class="title">Registrar nuevo producto</p>
+                  <br />
+    
+                  <label>
+                    <span>Nombre del Producto</span>
+                      <input
+                      type="text"
+                      name="nombre"
+                      id="nombre"
+                      placeholder="Nombre del producto"
+                      class="form-control mt-2"
+                      />
+                      
+                  </label>
+    
+                  <label>
+                      <span>Descripción</span>
+                      <textarea
+                      type="text"
+                      name="descripcion"
+                      id="descripcion"
+                      placeholder="Descripción...."
+                      class="form-control mt-2"
+                      ></textarea>
+                      
+                  </label>
+    
+                  <label>
+                      <span>Precio</span>
+                      <input
+                      type="number"
+                      name="precio"
+                      id="precio"
+                      placeholder="Precio..."
+                      class="form-control mt-2"
+                      />
+                      
+                  </label>
+                  <!--fats fats no te olvides de los estilos crack-->
+                  <span for="id_categoria">Categoría</span>
+                  <select name="id_categoria" id="categoria" class="form-select mb-3 mt-2">
+                    <option value="">Selecciona una categoría</option>
+                    <% for (const categoria of categorias) { %>
+                      <option value="<%= categoria.id_categoria %>">
+                        <%= categoria.nombre %>
+                      </option>
+                      <% } %>
+                      
+                  </select>
+                  <span for="imagen">Imagen</span>
+                  <input type="file" name="imagen" id="imagen" class="form-control mb-4 mt-2" />
+                  <img
+                      id="previewImage"
+                      src=""
+                      alt="Preview Image"
+                      style="max-width: 400px; max-height: 400px; display: none"
                   />
-                  
-              </label>
-
-              <label>
-                  <span>Descripción</span>
-                  <input
-                  type="text"
-                  name="descripcion"
-                  id="descripcion"
-                  placeholder="Descripción...."
-                  class="input"
-                  />
-                  
-              </label>
-
-              <label>
-                  <span>Precio</span>
-                  <input
-                  type="text"
-                  name="precio"
-                  id="precio"
-                  placeholder="100"
-                  class="input"
-                  />
-                  
-              </label>
-              <!--fats fats no te olvides de los estilos crack-->
-              <label for="id_categoria">Categoría</label>
-              <select name="id_categoria" id="categoria" class="input">
-                <option value="">Selecciona una categoría</option>
-                <% for (const categoria of categorias) { %>
-                  <option value="<%= categoria.id_categoria %>">
-                    <%= categoria.nombre %>
-                  </option>
-                  <% } %>
-                  
-              </select>
-              <label for="imagen">Imagen</label>
-              <input type="file" name="imagen" id="imagen" class="input" />
-              <img
-                  id="previewImage"
-                  src=""
-                  alt="Preview Image"
-                  style="max-width: 400px; max-height: 400px; display: none"
-              />
-
-              <script>
-                  // Obtener referencias a los elementos HTML
-                  const inputFile = document.getElementById("imagen");
-                  const previewImage = document.getElementById("previewImage");
-
-                  // Agregar un evento change al input file
-                  inputFile.addEventListener("change", function () {
-                  const selectedFile = this.files[0]; // Obtener el archivo seleccionado
-
-                  if (selectedFile) {
-                      // Crear una URL temporal para mostrar la imagen seleccionada
-                      const imageUrl = URL.createObjectURL(selectedFile);
-
-                      // Mostrar la imagen en el elemento <img> y hacerlo visible
-                      previewImage.src = imageUrl;
-                      previewImage.style.display = "block";
-                  } else {
-                      // Si no se selecciona ningún archivo, ocultar el elemento <img>
-                      previewImage.src = "";
-                      previewImage.style.display = "none";
-                  }
-                  });
-              </script>
-
-              <button class="submit" type="submit">Registrar</button>
-              </form>
-          </section>
+    
+                  <script>
+                      // Obtener referencias a los elementos HTML
+                      const inputFile = document.getElementById("imagen");
+                      const previewImage = document.getElementById("previewImage");
+    
+                      // Agregar un evento change al input file
+                      inputFile.addEventListener("change", function () {
+                      const selectedFile = this.files[0]; // Obtener el archivo seleccionado
+    
+                      if (selectedFile) {
+                          // Crear una URL temporal para mostrar la imagen seleccionada
+                          const imageUrl = URL.createObjectURL(selectedFile);
+    
+                          // Mostrar la imagen en el elemento <img> y hacerlo visible
+                          previewImage.src = imageUrl;
+                          previewImage.style.display = "block";
+                      } else {
+                          // Si no se selecciona ningún archivo, ocultar el elemento <img>
+                          previewImage.src = "";
+                          previewImage.style.display = "none";
+                      }
+                      });
+                  </script>
+    
+                  <center>
+                    <button class="btn btn-primary mt-3" type="submit">Registrar</button>
+                    <div class="btn btn-danger mt-3" onclick="cerrarModal()">Cerrar</div>
+                    </center>
+                  </form>
+              </section>
+          </div>
       </div>
-  </div>
-</div>
+    </div>
+  </center>
  
 <!-- Modal de edicion -->
-<div class="overlay" id="overlayeditar"></div>
+<div class="overlay" id="overlayeditar">
 
-<div class="modal" id="modaleditar">
-    <div class="close-btn" onclick="cerrarModaleditar()">&times;</div>
-
-    <div class="productsBox">
-        <div class="products">
-            <section class="form-register">
-                <div>
-                    <h1>Productos</h1>
-                </div>
-
-                <form id="editarForm" class="form">
-                    <input type="hidden" name="id_producto" id="editIdProducto" value="" />
-                    <!-- Agrega IDs a los campos del formulario -->
-                    <label>
-                        <span>Nombre del producto</span>
-                        <input
-                            type="text"
-                            name="nombreeditar"
-                            id="editNombre"
-                            placeholder="Nombre del producto"
-                            class="input"
-                        />
-                    </label>
-
-                    <label>
-                        <span>Descripción</span>
-                        <input
-                            type="text"
-                            name="descripcioneditar"
-                            id="editDescripcion"
-                            placeholder="Descripción...."
-                            class="input"
-                        />
-                    </label>
-
-                    <label>
-                        <span>Precio</span>
-                        <input
-                            type="text"
-                            name="precioeditar"
-                            id="editPrecio"
-                            placeholder="100"
-                            class="input"
-                        />
-                    </label>
-                    <input
-                        type="text"
-                        name="idProducto"
-                        id="idProducto"
-                        style="display: none;"
-                    />
-                    <!-- Agrega el campo de categoría con el ID correcto -->
-                    <label for="id_categoriaeditar">Categoría</label>
-                    <select name="id_categoriaeditar" id="categoriaeditar" class="input">
-                        <option value="">Selecciona una categoría</option>
-                        <% for (const categoria of categorias) { %>
-                            <option value="<%= categoria.id_categoria %>">
-                                <%= categoria.nombre %>
-                            </option>
-                        <% } %>
-                    </select>
-
-                    <label for="imageneditar">Imagen</label>
-                    <input type="file" name="imageneditar" id="imageneditar" class="input" />
-                    <img
-                        id="previewImageEditar"
-                        src=""
-                        alt="Preview Image"
-                        style="max-width: 400px; max-height: 400px; display: none"
-                    />
-
-                    <button type="button" onclick="guardarCambios()">Guardar Cambios</button>
-                </form>
-            </section>
-        </div>
+<center>
+    <div class="modal" id="modaleditar">
+    
+        <center>
+            <div class="productsBox">
+                <center>
+                    <div class="products">
+                        <section class="form-register">
+                            <div>
+                                <h1>Productos</h1>
+                                <p>Editar Producto</p>
+                            </div>
+            
+                            <form id="editarForm" class="form">
+                                <input type="hidden" name="id_producto" id="editIdProducto" value="" />
+                                <!-- Agrega IDs a los campos del formulario -->
+                                <label>
+                                    <span>Nombre del producto</span>
+                                    <input
+                                        type="text"
+                                        name="nombreeditar"
+                                        id="editNombre"
+                                        placeholder="Nombre del producto"
+                                        class="form-control"
+                                    />
+                                </label>
+            
+                                <label>
+                                    <span>Descripción</span>
+                                    <textarea
+                                        type="text"
+                                        name="descripcioneditar"
+                                        id="editDescripcion"
+                                        placeholder="Descripción...."
+                                        class="form-control"
+                                    ></textarea>
+                                </label>
+            
+                                <label>
+                                    <span>Precio</span>
+                                    <input
+                                        type="text"
+                                        name="precioeditar"
+                                        id="editPrecio"
+                                        placeholder="100"
+                                        class="form-control"
+                                    />
+                                </label>
+                                <input
+                                    type="text"
+                                    name="idProducto"
+                                    id="idProducto"
+                                    style="display: none;"
+                                />
+                                <!-- Agrega el campo de categoría con el ID correcto -->
+                                <label for="id_categoriaeditar">Categoría
+                                    <select name="id_categoriaeditar" id="categoriaeditar" class="form-select">
+                                        <option value="">Selecciona una categoría</option>
+                                        <% for (const categoria of categorias) { %>
+                                            <option value="<%= categoria.id_categoria %>">
+                                                <%= categoria.nombre %>
+                                            </option>
+                                        <% } %>
+                                    </select>
+                                </label>
+                                
+            
+                                <label for="imageneditar">Imagen
+                                    <input type="file" name="imageneditar" id="imageneditar" class="form-control mb-3" />
+                                <img
+                                    id="previewImageEditar"
+                                    class="mb-2"
+                                    src=""
+                                    alt="Preview Image"
+                                    style="max-width: 400px; max-height: 400px; display: none"
+                                />
+                                </label>
+                                
+                                <script>
+                                    // Obtener referencias a los elementos HTML
+                                    const inputFile1 = document.getElementById("imageneditar");
+                                    const previewImage1 = document.getElementById("previewImageEditar");
+                  
+                                    // Agregar un evento change al input file
+                                    inputFile1.addEventListener("change", function () {
+                                    const selectedFile = this.files[0]; // Obtener el archivo seleccionado
+                  
+                                    if (selectedFile) {
+                                        // Crear una URL temporal para mostrar la imagen seleccionada
+                                        const imageUrl = URL.createObjectURL(selectedFile);
+                  
+                                        // Mostrar la imagen en el elemento <img> y hacerlo visible
+                                        previewImage1.src = imageUrl;
+                                        previewImage1.style.display = "block";
+                                    } else {
+                                        // Si no se selecciona ningún archivo, ocultar el elemento <img>
+                                        previewImage1.src = "";
+                                        previewImage1.style.display = "none";
+                                    }
+                                    });
+                                </script>
+            
+                                <button type="button" class=" btn btn-primary" onclick="guardarCambios()">Guardar Cambios</button>
+                                <div class="btn btn-danger " onclick="cerrarModaleditar()">Cerrar</div>
+                            </form>
+                        </section>
+                    </div>
+                </center>
+            </div>
+        </center>
     </div>
+</center>
 </div>
 
 
@@ -339,7 +389,7 @@ function abrirModal() {
 }
  
 function cerrarModal() {
-    document.getElementById("overlayeditar").style.display = "none";
+    document.getElementById("overlay").style.display = "none";
     document.getElementById("modal").style.display = "none";
 }
  
@@ -349,7 +399,6 @@ function obtenerProductoPorId(productId) {
             type: "GET",
             url: `https://herencia-api.onrender.com/productos/${productId}`,
             success: function (response) {
-                console.log("Respuesta de la API:", response);
 
                 // Verifica si la respuesta contiene datos válidos
                 if (response && response.id_producto !== undefined && response.id_producto !== null) {
@@ -375,27 +424,26 @@ function abrirModaleditar(btn) {
 
     // Obtén el ID del producto desde el botón
     const productIdToEdit = $(btn).data("product-id");
-    console.log("Empezando el AJAX para el producto con ID:", productIdToEdit);
     // Realiza una solicitud AJAX para obtener los detalles del producto
     obtenerProductoPorId(productIdToEdit)
         .then((product) => {
-            console.log("Datos del producto obtenidos con éxito:", product);
 
             // Verifica si la respuesta contiene datos válidos
             if (product && product.id_producto !== undefined && product.id_producto !== null) {
-                const { nombre, descripcion, precio, imagen } = product;
+                const { nombre, descripcion, precio, imagen,id_categoria } = product;
+                const select = document.getElementById('categoriaeditar');
 
-                console.log("Nombre:", nombre);
-                console.log("Descripción:", descripcion);
-                console.log("Precio:", precio);
-                console.log("Imagen:", imagen);
+                const options = select.options;
+
+                options[id_categoria].selected = true;
 
                 $("#editNombre").val(nombre);
                 $("#editDescripcion").val(descripcion);
                 $("#editPrecio").val(precio);
                 $("#idProducto").val(productIdToEdit);
-                $("#previewImage").attr("src", imagen);
-                $("#previewImage").css("display", "block");
+                $("#previewImageEditar").attr("src", imagen);
+
+                $("#previewImageEditar").css("display", "block");
                 $("#editIdProducto").val(productIdToEdit);
                 $("#saveChanges").data("product-id", productIdToEdit);
             } else {
