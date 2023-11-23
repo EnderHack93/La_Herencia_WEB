@@ -227,60 +227,13 @@
                 <div>
                     <h1>Productos</h1>
                 </div>
-
-                <form id="editarForm" class="form">
-                    <input type="hidden" name="id_producto" id="editIdProducto" value="" />
-                    <!-- Agrega IDs a los campos del formulario -->
-                    <label>
-                        <span>Nombre del producto</span>
-                        <input
-                            type="text"
-                            name="nombreeditar"
-                            id="editNombre"
-                            placeholder="Nombre del producto"
-                            class="input"
-                        />
-                    </label>
-
-                    <label>
-                        <span>Descripción</span>
-                        <input
-                            type="text"
-                            name="descripcioneditar"
-                            id="editDescripcion"
-                            placeholder="Descripción...."
-                            class="input"
-                        />
-                    </label>
-
-                    <label>
-                        <span>Precio</span>
-                        <input
-                            type="text"
-                            name="precioeditar"
-                            id="editPrecio"
-                            placeholder="100"
-                            class="input"
-                        />
-                    </label>
-                    <input
-                        type="text"
-                        name="idProducto"
-                        id="idProducto"
-                        style="display: none;"
-                    />
-
-                    <label for="imageneditar">Imagen</label>
-                    <input type="file" name="imageneditar" id="imageneditar" class="input" />
-                    <img
-                        id="previewImageEditar"
-                        src=""
-                        alt="Preview Image"
-                        style="max-width: 400px; max-height: 400px; display: none"
-                    />
-
-                    <button type="button" onclick="guardarCambios()">Guardar Cambios</button>
-                </form>
+                <p><strong>Productos:</strong> <span id="editProductos"></span></p>
+                <p><strong>Precio Total:</strong> <span id="editPrecioTotal"></span></p>
+                <p><strong>Cliente:</strong> <span id="editCliente"></span></p>
+                <p><strong>Fecha:</strong> <span id="editFecha"></span></p>
+                <p><strong>Hora:</strong> <span id="editHora"></span></p>
+                <p><strong>Estado:</strong> <span id="editEstado"></span></p>
+                
             </section>
         </div>
     </div>
@@ -297,25 +250,33 @@ function cerrarModal() {
     document.getElementById("overlay").style.display = "none";
     document.getElementById("modal").style.display = "none";
 }
-////inicio de script malevolo
-function obtenerProductoPorId(productId) {
+
+function obtenerdetallepedidoPorId(productId) {
     return new Promise(function (resolve, reject) {
         $.ajax({
             type: "GET",
             url: `https://herencia-api.onrender.com/detallepedidos/${productId}`,
             success: function (response) {
-                console.log("Respuesta de la API:", response);
-                console.log(productId)
+                console.log("Respuesta de la API (Detalle Pedido):", response);
 
                 // Verifica si la respuesta contiene datos válidos
-                if (response && response.id_producto !== undefined && response.id_producto !== null) {
-                    resolve(response);
+                if (response && response.length > 0) {
+                    const detallesProducto = response.map(detalle => ({
+                        cantidad: detalle.cantidad,
+                        precioTotal: detalle.precioTotal,
+                        precioUnitario: detalle.precioUnitario,
+                        idPedido: detalle.id_pedido, // Agregamos el ID del pedido
+                        idProducto: detalle.id_producto // Agregamos el ID del producto
+                    }));
+
+                    console.log("respuestita de la api:", detallesProducto);
+                    resolve(detallesProducto);
                 } else {
-                    reject("La respuesta del servidor no contiene datos válidos para el producto.");
+                    reject(`La respuesta del servidor no contiene datos válidos para el detalle del pedido. Datos recibidos: ${JSON.stringify(response)}`);
                 }
             },
             error: function (error) {
-                reject("Error al procesar los datos del producto: " + JSON.stringify(error));
+                reject(`Error al procesar los datos del detalle del pedido: ${JSON.stringify(error)}`);
             },
         });
     });
@@ -324,44 +285,170 @@ function obtenerProductoPorId(productId) {
 
 
 
-// Abre el modal y carga los detalles del producto
-function abrirModaleditar(btn) {
-    document.getElementById("overlayeditar").style.display = "block";
-    document.getElementById("modaleditar").style.display = "block";
+// Función para obtener detalles del pedido por su ID
 
-    // Obtén el ID del producto desde el botón
-    const productIdToEdit = $(btn).data("product-id");
-    console.log("Empezando el AJAX para el producto con ID:", productIdToEdit);
-    // Realiza una solicitud AJAX para obtener los detalles del producto
-    obtenerProductoPorId(productIdToEdit)
-        .then((product) => {
-            console.log("Datos del producto obtenidos con éxito:", product);
+function obtenerDetallesPedido(idPedido) {
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            type: "GET",
+            url: `https://herencia-api.onrender.com/pedidos/${idPedido}`,
+            success: function (response) {
+                console.log("Respuesta de la API (Pedido):", response);
 
-            // Verifica si la respuesta contiene datos válidos
-            if (product && product.id_producto !== undefined && product.id_producto !== null) {
-                const { nombre, descripcion, precio, imagen } = product;
-
-                console.log("Nombre:", nombre);
-                console.log("Descripción:", descripcion);
-                console.log("Precio:", precio);
-                console.log("Imagen:", imagen);
-
-                $("#editNombre").val(nombre);
-                $("#editDescripcion").val(descripcion);
-                $("#editPrecio").val(precio);
-                $("#idProducto").val(productIdToEdit);
-                $("#previewImage").attr("src", imagen);
-                $("#previewImage").css("display", "block");
-                $("#editIdProducto").val(productIdToEdit);
-                $("#saveChanges").data("product-id", productIdToEdit);
-            } else {
-                console.error("La respuesta del servidor no contiene datos válidos para el producto.");
-            }
-        })
-        .catch((error) => {
-            console.error("Error al obtener los detalles del producto:", error);
+                // Verifica si la respuesta contiene datos válidos
+                if (response && response.id_cliente !== undefined && response.id_cliente !== null) {
+                    resolve({
+                        id_cliente: response.id_cliente,
+                        fecha: response.fecha,
+                        hora: response.hora,
+                        montoTotal: response.montoTotal,
+                        estado: response.estado
+                    });
+                } else {
+                    reject(`La respuesta del servidor no contiene datos válidos para el pedido. Datos recibidos: ${JSON.stringify(response)}`);
+                }
+            },
+            error: function (error) {
+                reject(`Error al procesar los datos del pedido: ${JSON.stringify(error)}`);
+            },
         });
+    });
 }
+
+// Función para obtener detalles del cliente por su ID
+function obtenerDetallesCliente(idCliente) {
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            type: "GET",
+            url: `https://herencia-api.onrender.com/personas/${idCliente}`, // Ajusta la ruta según tu API
+            success: function (response) {
+                console.log("Respuesta de la API (Cliente):", response);
+
+                // Verifica si la respuesta contiene datos válidos
+                if (response && response.id_persona !== undefined && response.id_persona !== null) {
+                    resolve(response);
+                } else {
+                    reject(`La respuesta del servidor no contiene datos válidos para el cliente. Datos recibidos: ${JSON.stringify(response)}`);
+                }
+            },
+            error: function (error) {
+                reject(`Error al procesar los datos del cliente: ${JSON.stringify(error)}`);
+            },
+        });
+    });
+}
+function obtenerNombreProducto(idProducto) {
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            type: "GET",
+            url: `https://herencia-api.onrender.com/productos/${idProducto}`, // Ajusta la ruta según tu API
+            success: function (response) {
+                console.log("Respuesta de la API (Producto):", response);
+
+                // Verifica si la respuesta contiene datos válidos
+                if (response && response.nombre !== undefined && response.nombre !== null) {
+                    resolve(response.nombre);
+                } else {
+                    reject(`La respuesta del servidor no contiene datos válidos para el producto. Datos recibidos: ${JSON.stringify(response)}`);
+                }
+            },
+            error: function (error) {
+                reject(`Error al procesar los datos del producto: ${JSON.stringify(error)}`);
+            },
+        });
+    });
+}
+
+// Abre el modal y carga los detalles del producto
+// Abre el modal y carga los detalles del producto
+async function abrirModaleditar(btn) {
+    try {
+        document.getElementById("overlayeditar").style.display = "block";
+        document.getElementById("modaleditar").style.display = "block";
+
+        // Obtén el ID del producto desde el botón
+        const productIdToEdit = $(btn).data("product-id");
+        console.log("Empezando el AJAX para el producto con ID:", productIdToEdit);
+
+        // Realiza una solicitud AJAX para obtener los detalles del producto
+        const detallesProducto = await obtenerdetallepedidoPorId(productIdToEdit);
+
+        // Verifica si hay al menos un elemento en el array
+        if (detallesProducto && detallesProducto.length > 0) {
+            // Crea un array de promesas para las solicitudes AJAX
+            const promises = detallesProducto.map(async (detallePedido) => {
+                // Realiza otra solicitud AJAX para obtener detalles del pedido
+                const pedido = await obtenerDetallesPedido(detallePedido.idPedido);
+                console.log("Datos del pedido obtenidos con éxito:", pedido);
+
+                // Realiza otra solicitud AJAX para obtener detalles del cliente
+                const cliente = await obtenerDetallesCliente(pedido.id_cliente);
+                console.log("Datos del cliente obtenidos con éxito:", cliente);
+
+                // Realiza otra solicitud AJAX para obtener el nombre del producto
+                const nombreProducto = await obtenerNombreProducto(detallePedido.idProducto);
+                console.log("Nombre del producto obtenido con éxito:", nombreProducto);
+
+                // Retorna un objeto con los datos que necesitas para este detalle del producto
+                return {
+                    detallePedido,
+                    pedido,
+                    cliente,
+                    nombreProducto,
+                };
+            });
+
+            // Espera a que todas las promesas se resuelvan
+            const resultados = await Promise.all(promises);
+
+            // Crea un array para almacenar los nombres de los productos
+            const nombresProductos = [];
+
+            // Inicializa la variable para el monto total del pedido
+            let montoTotalPedido = 0;
+
+            // Itera sobre los resultados y actualiza los elementos de texto en el modal
+            for (const resultado of resultados) {
+                const { detallePedido, pedido, cliente, nombreProducto } = resultado;
+                console.log("Detalle del pedido obtenido con éxito:", detallePedido);
+
+                // Agrega el nombre del producto al array
+                nombresProductos.push(nombreProducto);
+                
+                // Actualiza los elementos de texto en el modal con los datos obtenidos
+                $("#editProductos").text(nombresProductos.join(', ')); // Une los nombres con coma y espacio
+                $("#editPrecioTotal").text(pedido.montoTotal); // Actualiza con el montoTotal del pedido
+                $("#editCliente").text(`${cliente.nombres} ${cliente.apellidos}`);
+                $("#editFecha").text(pedido.fecha);
+                $("#editHora").text(pedido.hora);
+                $("#editEstado").text(pedido.estado);
+
+                // Actualiza el montoTotal del pedido
+                montoTotalPedido += pedido.montoTotal;
+            }
+
+            // Puedes mostrar el montoTotalPedido en otro elemento si es necesario
+            $("#montoTotalPedido").text(montoTotalPedido);
+        } else {
+            console.error("La respuesta del servidor no contiene datos válidos para el detalle del pedido:", detallesProducto);
+            throw new Error("La respuesta del servidor no contiene datos válidos para el detalle del pedido.");
+        }
+    } catch (error) {
+        console.error("Error al obtener detalles del producto, pedido o cliente:", error);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
     // Cierra el modal de edición
     function cerrarModaleditar() {
