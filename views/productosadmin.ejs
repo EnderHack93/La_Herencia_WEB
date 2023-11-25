@@ -129,7 +129,7 @@
                                         <button type="button" class="btn btn-primary btn-edit" data-product-id="<%= product.id_producto %>" data-toggle="modal" data-target="#editModal" onclick="abrirModaleditar(this)"><i class="bi bi-pencil"></i></button>
                          
                          
-                                        <button type="button" class="btn btn-danger" data-product-id="<%= product.id_producto %>"><i class="bi bi-x-circle"></i></button>
+                                        <button type="button" class="btn btn-danger btn-desactivar" data-product-id="<%= product.id_producto %>"><i class="bi bi-x-circle"></i></button>
                                       </td>
                                     </tr>
                                   <% } %>
@@ -501,7 +501,49 @@ function abrirModaleditar(btn) {
 
 
 </script>
-     
+     <!--cositas mauro-->
+     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script>
+  $(".btn-desactivar").on("click", function() {
+    const productId = $(this).data("product-id");
+
+    Swal.fire({
+      title: "Desactivar Producto?",
+      icon: "error",
+      confirmButtonText: "Desactivar",
+      confirmButtonColor: "red",
+      showCancelButton: true,
+      cancelButtonText: "Cancelar",
+      cancelButtonColor: "blue",
+      showLoaderOnConfirm: true,
+      preConfirm: async (ojo) => {
+        $.ajax({
+          type: "DELETE",
+          url: `https://herencia-api.onrender.com/productos/${productId}`,
+          success: function(response) {
+                
+          },
+          error: function(error) {
+            console.error("Error al eliminar el producto:", error);
+          }
+        })
+      }
+
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+            title:"Producto Desactivado",
+            icon:"success",
+            showConfirmButton: false,
+            timer: 2000
+        })
+        location.reload()   
+      }
+    })
+  });
+</script>
+
+     <!--fin cositas mauro-->
     </body>
    
 </body>
