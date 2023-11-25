@@ -40,14 +40,13 @@ const verCrearCategorias = async (req, res) => {
   const { nombre} = req.body;
   const formData = new FormData();
   formData.append("nombre", nombre);
-   console.log(formData)
   axios.post("https://herencia-api.onrender.com/categorias",formData,{
     headers: {
       "Content-Type": "multipart/form-data",
     }
    })
    .then((response) => {
-     res.send(response.data);
+     res.redirect("/categorias");
    })
    .catch((error) => {
      res.send(error.response.data);
