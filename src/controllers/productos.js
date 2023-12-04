@@ -33,13 +33,15 @@ export const axiosPostCrearProductos = async (req, res) => {
   const { nombre, descripcion, precio, id_categoria } = req.body;
   const imagen = req.files.find((f) => f.fieldname === "imagen");
 
-  const imgBlob = new Blob([imagen.buffer]);
+  console.log(imagen);
+
   const formData = new FormData();
-  formData.append("imagen", imgBlob,imagen.originalname);
+  formData.append("imagen", imagen.buffer,imagen.originalname);
   formData.append("nombre", nombre);
   formData.append("descripcion", descripcion);
   formData.append("precio", precio);
   formData.append("id_categoria", id_categoria);
+
 
   axios.post("https://herencia-api.onrender.com/productos",formData,{
     headers: {
@@ -50,7 +52,7 @@ export const axiosPostCrearProductos = async (req, res) => {
      res.redirect('/products');
    })
    .catch((error) => {
-     res.send(error.response.data);
+     console.log(error);
    });;
   
 };
