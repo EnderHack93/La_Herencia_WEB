@@ -1,7 +1,9 @@
 import fetch from 'node-fetch';
 import axios from "axios";
 import FormData from 'form-data';
+
 const getActiveCategories = async (req, res) => {
+
   try {
     const response = await fetch('https://herencia-api.onrender.com/categorias');
 
@@ -30,7 +32,10 @@ const getActiveCategories = async (req, res) => {
   }
 };
 const verCrearCategorias = async (req, res) => {
-
+  const autorizacion=req.session.token;
+  if(autorizacion==null ||autorizacion==undefined) {
+    res.redirect("/login")
+  }
     const categorias = await getActiveCategories(); // Obtiene el array de categorías
 
     res.render('crear categoria', { categorias });

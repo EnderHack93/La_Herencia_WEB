@@ -30,7 +30,10 @@ const getActiveClients = async (req, res) => {
   }
 };
 const verCClientes = async (req, res) => {
-
+  const autorizacion=req.session.token;
+  if(autorizacion==null) {
+    res.redirect("/login")
+  }
     const personas = await getActiveClients(); // Obtiene el array de categorías
 
     res.render('clientes', { personas });

@@ -2,6 +2,7 @@ import fetch from 'node-fetch';
 import axios from "axios";
 import FormData from 'form-data';
 const getcupones = async (req, res) => {
+
   try {
     const response = await fetch('https://herencia-api.onrender.com/cupones');
 
@@ -30,7 +31,10 @@ const getcupones = async (req, res) => {
   }
 };
 const verCupones = async (req, res) => {
-
+  const autorizacion=req.session.token;
+  if(autorizacion==null ||autorizacion==undefined) {
+    res.redirect("/login")
+  }
     const cupones = await getcupones(); // Obtiene el array de categorías
 
     res.render('cuponesadmin', { cupones });

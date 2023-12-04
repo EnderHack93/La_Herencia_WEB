@@ -92,7 +92,6 @@ const postCrearProductos = async (req, res) => {
 };
 const verproductostabla = async (req, res) => {
   const autorizacion=req.session.token;
-
   if(autorizacion==null) {
     res.redirect("/login")
   }

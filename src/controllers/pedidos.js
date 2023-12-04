@@ -30,7 +30,10 @@ const getPedidos = async (req, res) => {
   }
 };
 const verPedidos = async (req, res) => {
-
+  const autorizacion=req.session.token;
+  if(autorizacion==null) {
+    res.redirect("/login")
+  }
     const pedidos = await getPedidos(); // Obtiene el array de categorías
 
     res.render('pedidosadmin', { pedidos });
