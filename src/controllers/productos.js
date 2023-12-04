@@ -3,6 +3,7 @@ import axios from "axios";
 import { getActiveCategories } from "../controllers/categorias.js";
 import FormData from "form-data";
 const getActiveProducts = async (req, res) => {
+
   try {
     const response = await fetch("https://herencia-api.onrender.com/productos");
 
@@ -88,6 +89,12 @@ const postCrearProductos = async (req, res) => {
   }
 };
 const verproductostabla = async (req, res) => {
+  const autorizacion=req.session.token;
+
+  if(autorizacion==null) {
+    res.redirect("/login")
+  }
+
   try {
     const response = await fetch("https://herencia-api.onrender.com/productos");
 

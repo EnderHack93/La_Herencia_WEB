@@ -3,6 +3,7 @@ import { axiosPostCrearProductos, editarProducto, getActiveProducts, getCrearPro
 import { getActiveCategories ,verCrearCategorias,axiosPostCrearcategorias} from "../controllers/categorias.js";
 import { axiosPostCrearCliente ,verCClientes} from "../controllers/clientes.js";
 import {verIndex} from "../controllers/indexcontroller.js";
+import { axiosPostLogin ,verLogin} from "../controllers/login.js";
 import { verPedidos} from "../controllers/pedidos.js";
 import { verCupones,axiosPostCrearCupon} from "../controllers/cupon.js";
 const router = Router();
@@ -26,5 +27,8 @@ router.get("/indexadmin",verIndex)
 router.get("/pedidos",verPedidos)
 //cupones
 router.get("/cupones",verCupones)
+//login
+router.get("/login",verLogin)
+router.post("/login",axiosPostLogin)
 router.post("/crearcupones",axiosPostCrearCupon)
 export {router}
